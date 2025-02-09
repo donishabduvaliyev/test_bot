@@ -10,6 +10,7 @@ function CustomerInfo() {
     const [newLocation, setNewLocation] = useState({ name: "", houseNumber: "", floor: "", coordinates: "" });
     const [map, setMap] = useState(null);
     const [marker, setMarker] = useState(null);
+    
 
 
 
@@ -99,8 +100,8 @@ function CustomerInfo() {
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-5">
             <h1 className="text-2xl font-bold">Fill in Your Information</h1>
             <form className="bg-gray-700 p-5 rounded-lg flex flex-col gap-4" onSubmit={handleSubmit}>
-                <input type="text" value={userInfo.name}  className="p-2 bg-gray-300 text-black rounded" />
-                <input type="number" value={userInfo.phone}  className="p-2 bg-gray-300 text-black rounded" />
+                <input type="text" value={userInfo.name}   className="p-2 bg-gray-300 text-black rounded"  onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })} />
+                <input type="number" value={userInfo.phone}  className="p-2 bg-gray-300 text-black rounded"  onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })} />
 
                 <div className="flex gap-4">
                     <label className={`px-6 py-2 rounded cursor-pointer ${selectedRadio === "delivery" ? "bg-red-500" : "bg-gray-500"}`}>
