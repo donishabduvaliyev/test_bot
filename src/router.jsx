@@ -8,7 +8,7 @@ function Router() {
   return (
    <Routes >
     <Route path='/' index element={< App />}  />
-    <Route path='checkout' element={<CheckoutPage />} />
+    <Route path='varoq' element={<CheckoutPage />} />
     <Route path='adressInfo' element={<CustomerInfo />} />
    </Routes>
   )
