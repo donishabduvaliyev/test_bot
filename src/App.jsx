@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Cards from "./components/cards";
 import { sections } from "./data";
-import CheckoutPage from "./pages/checkout";
-import CustomerInfo from "./pages/customerInfo";
-import { Navigate, useNavigate } from "react-router-dom";
-
-
-// console.log(sections);
 
 function App() {
   const [activeSection, setActiveSection] = useState("");
   const [cart, setCart] = useState([]);
   const [count, setCount] = useState(1);
 
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
+  // Intersection Observer for active section tracking
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -29,22 +24,6 @@ function App() {
       { threshold: 0.5 }
     );
 
-
-    useEffect(() => {
-      // Initialize Telegram Web App
-      const tg = window.Telegram.WebApp;
-      tg.expand(); // Expands the web app to full screen
-
-      // Set up the main button
-      tg.MainButton.setText("Go to Checkout");
-      tg.MainButton.hide(); // Hide by default
-
-      // Handle button click
-      tg.MainButton.onClick(() => {
-        navigate(checkout);
-      });
-    }, []);
-
     sections.forEach(section => {
       const element = document.getElementById(section.id);
       if (element) observer.observe(element);
@@ -53,10 +32,24 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  // Telegram Web App Integration
   useEffect(() => {
-    console.log(cart)
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // Expands the web app to full screen
 
+    // Set up the main button
+    tg.MainButton.setText("Go to Checkout");
+    tg.MainButton.hide(); // Hide by default
 
+    // Handle button click
+    tg.MainButton.onClick(() => {
+      navigate("/checkout"); // Navigate to checkout page
+    });
+  }, [navigate]);
+
+  // Show/Hide Telegram Main Button based on cart content
+  useEffect(() => {
+    console.log(cart);
 
     const tg = window.Telegram.WebApp;
     if (cart.length > 0) {
@@ -68,7 +61,6 @@ function App() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-
       {/* Navigation Bar */}
       <motion.nav
         initial={{ opacity: 0, y: -50 }}
@@ -109,17 +101,15 @@ function App() {
             {section.title}
           </motion.h2>
 
-          < Cards section={section}
-            cart={cart} count={count} setCount={setCount}
-            setCart={setCart} />
+          <Cards
+            section={section}
+            cart={cart}
+            count={count}
+            setCount={setCount}
+            setCart={setCart}
+          />
         </motion.section>
       ))}
-      <div>
-        {/* <CheckoutPage  section={sections}  cart={cart} setCart={setCart}  count={count} setCount={setCount}/> */}
-
-        {/* < CustomerInfo /> */}
-
-      </div>
     </div>
   );
 }
