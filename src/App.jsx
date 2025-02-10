@@ -56,7 +56,15 @@ function App() {
   useEffect(() => {
     console.log(cart)
 
-  }, [cart])
+
+
+    const tg = window.Telegram.WebApp;
+    if (cart.length > 0) {
+      tg.MainButton.show(); // Show button if cart has items
+    } else {
+      tg.MainButton.hide(); // Hide if cart is empty
+    }
+  }, [cart]);
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
