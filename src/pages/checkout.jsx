@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function CheckoutPage({ section, cart, setCart }) {
+function CheckTheCart({ section, cart, setCart }) {
 
     const calculateTotalPrice = (price, quantity,) => {
         return (price * quantity);
@@ -31,7 +31,7 @@ function CheckoutPage({ section, cart, setCart }) {
     }
     return (
         <div className="min-h-screen bg-gray-900 text-center text-white flex flex-col">
-            <h1>CheckoutPage salom</h1>
+            <h1>CheckTheCart salom</h1>
             <div className="flex flex-col gap-3 items-center">
                 {cart.map((item, index) => (
                     <div
@@ -93,4 +93,4 @@ function CheckoutPage({ section, cart, setCart }) {
     );
 }
 
-export default CheckoutPage;
+export default CheckTheCart;

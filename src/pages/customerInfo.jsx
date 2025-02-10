@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
@@ -11,6 +12,7 @@ function CustomerInfo() {
     const [map, setMap] = useState(null);
     const [marker, setMarker] = useState(null);
     
+    const navigate = useNavigate()
 
 
 
@@ -128,7 +130,7 @@ function CustomerInfo() {
                 )}
 
                 <textarea placeholder="Comment" className="p-2 bg-gray-300 text-black rounded" value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
-                <button type="submit" className="bg-green-500 px-4 py-2 rounded">Submit</button>
+                <button type="submit" className="bg-green-500 px-4 py-2 rounded" onClick={()=> navigate('varoq')}>Submit</button>
             </form>
 
             {showModal && (

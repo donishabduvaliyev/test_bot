@@ -87,7 +87,7 @@ function App() {
     tg.expand(); // Expands the web app to full screen
 
     // Set up the main button
-    tg.MainButton.setText("Go to Checkout");
+    tg.MainButton.setText(`Go to Checkout ${cart}`);
     tg.MainButton.hide(); // Hide by default
 
     const handleMainButtonClick = () => {
