@@ -8,10 +8,57 @@ function App() {
   const [activeSection, setActiveSection] = useState("");
   const [cart, setCart] = useState([]);
   const [count, setCount] = useState(1);
-
   const navigate = useNavigate();
 
-  // Intersection Observer for active section tracking
+
+
+
+  const [chatId, setChatId] = useState("");
+  const [message, setMessage] = useState("");
+
+  const sendMessageToBot = () => {
+    fetch("http://localhost:5000/send-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chatId, message })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Message sent successfully!");
+        } else {
+          console.error("Error:", data.error);
+        }
+      })
+      .catch((err) => console.error("Error:", err));
+  };
+
+
+
+
+
+  // ✅ Check if Telegram WebApp is available
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      console.log("Telegram WebApp detected:", window.Telegram);
+    } else {
+      console.error("Telegram WebApp is not available!");
+    }
+  }, []);
+
+  // ✅ Send Message to Telegram Bot only ONCE (on mount)
+  useEffect(() => {
+    fetch("http://localhost:5000/send-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chatId: "YOUR_CHAT_ID", message: "Hello from React!" }),
+    })
+      .then(res => res.json())
+      .then(data => console.log("Message sent:", data))
+      .catch(err => console.error("Error sending message:", err));
+  }, []);
+
+  // ✅ Intersection Observer for tracking active section
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -30,32 +77,41 @@ function App() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [sections]); // Added `sections` as a dependency
 
-  // Telegram Web App Integration
+  // ✅ Telegram Web App Integration
   useEffect(() => {
     const tg = window.Telegram.WebApp;
+    if (!tg) return;
+
     tg.expand(); // Expands the web app to full screen
 
     // Set up the main button
     tg.MainButton.setText("Go to Checkout");
     tg.MainButton.hide(); // Hide by default
 
-    // Handle button click
-    tg.MainButton.onClick(() => {
-      navigate("/checkout"); // Navigate to checkout page
-    });
+    const handleMainButtonClick = () => {
+      navigate("/checkout");
+    };
+
+    tg.MainButton.onClick(handleMainButtonClick);
+
+    return () => {
+      tg.MainButton.offClick(handleMainButtonClick); // Cleanup on unmount
+    };
   }, [navigate]);
 
-  // Show/Hide Telegram Main Button based on cart content
+  // ✅ Show/Hide Telegram Main Button based on cart content
   useEffect(() => {
-    console.log(cart);
+    console.log("Cart updated:", cart);
 
     const tg = window.Telegram.WebApp;
+    if (!tg) return;
+
     if (cart.length > 0) {
-      tg.MainButton.show(); // Show button if cart has items
+      tg.MainButton.show();
     } else {
-      tg.MainButton.hide(); // Hide if cart is empty
+      tg.MainButton.hide();
     }
   }, [cart]);
 
