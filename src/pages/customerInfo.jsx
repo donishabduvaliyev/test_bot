@@ -80,7 +80,7 @@ function CustomerInfo() {
                 )}
 
                 <textarea placeholder="Comment" className="p-2 bg-gray-300 text-black rounded" value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
-                <button type="submit" className="bg-green-500 px-4 py-2 rounded" onClick={() => navigate('varoq')}>Submit</button>
+                <button type="submit" className="bg-green-500 px-4 py-2 rounded" onClick={() => navigate('/')}>Submit</button>
             </form>
         </div>
     );
