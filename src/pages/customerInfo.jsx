@@ -19,6 +19,18 @@ function CustomerInfo() {
         }
     }, []);
 
+    useEffect(() => {
+        if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
+            const chatId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    
+            fetch(`http://localhost:5000/get-phone/${chatId}`)
+                .then(res => res.json())
+                .then(data => setUserInfo(prev => ({ ...prev, phone: data.phoneNumber })))
+                .catch(err => console.error("Error fetching phone:", err));
+        }
+    }, []);
+    
+
     const requestLocation = () => {
         window.Telegram.WebApp.showPopup({
             title: "Location Access",
