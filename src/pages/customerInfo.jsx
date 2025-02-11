@@ -13,8 +13,9 @@ function CustomerInfo() {
         window.Telegram.WebApp.ready();
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
-        if (user) {
-            setUserInfo({ name: user.first_name, phone: user.id.toString() });
+        const phone = tg.initDataUnsafe?.user?.phone_number;
+        if (user && phone) {
+            setUserInfo({ name: user.first_name, phone: phone });
         }
     }, []);
 
