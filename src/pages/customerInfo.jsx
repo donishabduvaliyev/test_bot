@@ -9,6 +9,28 @@ function CustomerInfo() {
     const [comment, setComment] = useState("");
     const navigate = useNavigate();
 
+
+
+    useEffect(() => {
+        if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
+            const chatId = window.Telegram.WebApp.initDataUnsafe.user.id;
+
+
+            fetch(`http://localhost:5000/get-phone/${chatId}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.phoneNumber) {
+                        document.getElementById("phone-number").innerText = data.phoneNumber;
+                    } else {
+                        document.getElementById("phone-number").innerText = "No phone number found";
+                    }
+                })
+                .catch((err) => console.error("Fetch error:", err));
+
+
+        }
+    }, []);
+
     useEffect(() => {
         window.Telegram.WebApp.ready();
         const tg = window.Telegram.WebApp;
@@ -16,18 +38,6 @@ function CustomerInfo() {
         const phone = tg.initDataUnsafe?.user?.phone_number;
         if (user && phone) {
             setUserInfo({ name: user.first_name, phone: phone });
-        }
-    }, []);
-
-    useEffect(() => {
-        if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
-            const chatId = window.Telegram.WebApp.initDataUnsafe.user.id;
-
-            fetch(`http://localhost:5000/get-phone/${chatId}`)
-                .then(response => response.json())
-                .then(data => console.log("User Phone:", data.phoneNumber))
-                .catch(error => console.error("Error fetching phone number:", error));
-
         }
     }, []);
 
