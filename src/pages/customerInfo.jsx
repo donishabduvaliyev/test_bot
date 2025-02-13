@@ -14,7 +14,7 @@ function CustomerInfo() {
     useEffect(() => {
         if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
             const chatId = window.Telegram.WebApp.initDataUnsafe.user.id;
-    
+
             fetch(`http://localhost:5000/get-phone/${chatId}`)
                 .then((res) => res.json())
                 .then((data) => {
@@ -25,15 +25,15 @@ function CustomerInfo() {
                 .catch((err) => console.error("Fetch error:", err));
         }
     }, []);
-    
+
 
     useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe?.user;
-    if (user) {
-        setUserInfo(prev => ({ ...prev, name: user.first_name }));
-    }
-}, []);
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            setUserInfo(prev => ({ ...prev, name: user.first_name }));
+        }
+    }, []);
 
 
 
@@ -60,7 +60,7 @@ function CustomerInfo() {
             setSelectedLocation(locations.length + 1);
         });
     }, []);
-    
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -69,15 +69,15 @@ function CustomerInfo() {
         alert("Form submitted successfully!");
         navigate('/'); // Move it here
     };
-    
+
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-5">
             <h1 className="text-2xl font-bold">Fill in Your Information</h1>
             <form className="bg-gray-700 p-5 rounded-lg flex flex-col gap-4" onSubmit={handleSubmit}>
-                <input type="text" value={userInfo.name} className="p-2 bg-gray-300 text-black rounded" onChange={(e) => setUserInfo(prev => ({ ...prev, name: e.target.value }))}  />
-                <input type="text" value={userInfo.phone} className="p-2 bg-gray-300 text-black rounded" onChange={(e) => setUserInfo(prev => ({ ...prev, phone: e.target.value }))}  />
-
+                <input type="text" value={userInfo.name} className="p-2 bg-gray-300 text-black rounded" onChange={(e) => setUserInfo(prev => ({ ...prev, name: e.target.value }))} />
+                <input type="text" value={userInfo.phone} className="p-2 bg-gray-300 text-black rounded" onChange={(e) => setUserInfo(prev => ({ ...prev, phone: e.target.value }))} />
+                <h1>{userInfo.phone}</h1>
                 <div className="flex gap-4">
                     <label className={`px-6 py-2 rounded cursor-pointer ${selectedRadio === "delivery" ? "bg-red-500" : "bg-gray-500"}`}>
                         <input type="radio" value="delivery" name="address" className="hidden" onChange={() => setSelectedRadio("delivery")} /> Delivery
