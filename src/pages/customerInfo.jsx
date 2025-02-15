@@ -35,18 +35,16 @@ function CustomerInfo() {
     }, []);
 
     const requestLocation = () => {
-        setShowLocationModal(true);
-        window.Telegram.WebApp.sendData("request_location");
-    };
-
-    useEffect(() => {
-        window.Telegram.WebApp.onEvent("location", (location) => {
-            setNewLocation({
-                name: "",
-                coordinates: `${location.latitude},${location.longitude}`
-            });
+        window.Telegram.WebApp.openLocationDialog({}, (location) => {
+            if (location) {
+                setNewLocation({
+                    name: "",
+                    coordinates: `${location.latitude},${location.longitude}`
+                });
+                setShowLocationModal(true);
+            }
         });
-    }, []);
+    };
 
     const handleSubmitLocation = () => {
         if (newLocation.name.trim()) {
