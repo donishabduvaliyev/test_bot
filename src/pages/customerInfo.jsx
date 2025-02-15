@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import YandexMapModal from "../components/yandexMaps";
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
@@ -108,16 +109,15 @@ function CustomerInfo() {
             </form>
 
             {showLocationModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-5 rounded-lg text-black flex flex-col gap-3">
-                        <h2 className="text-xl font-bold">Select Location</h2>
-                        <div id="yandex-map" className="w-full h-64" />
-                        <input type="text" className="p-2 border rounded" value={newLocation.name} onChange={(e) => setNewLocation(prev => ({ ...prev, name: e.target.value }))} placeholder="Location Name" />
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSubmitLocation}>Save Location</button>
-                        <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setShowLocationModal(false)}>Cancel</button>
-                    </div>
-                </div>
+                <YandexMapModal
+                    onClose={() => setShowLocationModal(false)}
+                    onSave={(newLoc) => {
+                        setLocations([...locations, { ...newLoc, id: locations.length + 1 }]);
+                        setSelectedLocation(locations.length + 1);
+                    }}
+                />
             )}
+
         </div>
     );
 }
