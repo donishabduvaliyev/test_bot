@@ -40,9 +40,9 @@ function App() {
   // ✅ Check if Telegram WebApp is available
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      alert("Telegram WebApp detected:", window.Telegram);
+      console.log("Telegram WebApp detected:", window.Telegram);
     } else {
-      alert("Telegram WebApp is not available!");
+     console.log("Telegram WebApp is not available!");
     }
   }, []);
 
@@ -51,7 +51,7 @@ function App() {
     fetch("http://localhost:5000/send-message", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chatId: "YOUR_CHAT_ID", message: "Hello from React!" }),
+      body: JSON.stringify({ chatId: window.Telegram.WebApp.chatId, message: "Hello from React!" }),
     })
       .then(res => res.json())
       .then(data => console.log("Message sent:", data))
