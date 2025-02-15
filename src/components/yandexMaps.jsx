@@ -4,22 +4,56 @@ const YandexMapModal = ({ onClose, onSave }) => {
     const [locationName, setLocationName] = useState("");
     const [coordinates, setCoordinates] = useState(null);
     const mapRef = useRef(null);
+    const mapInstance = useRef(null);
+    const placemark = useRef(null);
 
     useEffect(() => {
         window.ymaps.ready(() => {
-            const map = new window.ymaps.Map(mapRef.current, {
+            mapInstance.current = new window.ymaps.Map(mapRef.current, {
                 center: [55.751244, 37.618423], // Default center (Moscow)
                 zoom: 10,
-                controls: ["zoomControl"],
+                controls: ["zoomControl", "geolocationControl"],
             });
 
             // Click event to select location
-            map.events.add("click", (e) => {
+            mapInstance.current.events.add("click", (e) => {
                 const coords = e.get("coords");
                 setCoordinates(coords);
+
+                // Remove previous placemark if exists
+                if (placemark.current) {
+                    mapInstance.current.geoObjects.remove(placemark.current);
+                }
+
+                // Add new placemark
+                placemark.current = new window.ymaps.Placemark(coords, {}, { preset: "islands#redDotIcon" });
+                mapInstance.current.geoObjects.add(placemark.current);
             });
         });
     }, []);
+
+    // Function to get user's current location
+    const goToMyLocation = () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userCoords = [position.coords.latitude, position.coords.longitude];
+                setCoordinates(userCoords);
+
+                // Move map to user's location
+                mapInstance.current.setCenter(userCoords, 15);
+
+                // Remove old placemark and add new one
+                if (placemark.current) {
+                    mapInstance.current.geoObjects.remove(placemark.current);
+                }
+                placemark.current = new window.ymaps.Placemark(userCoords, {}, { preset: "islands#redDotIcon" });
+                mapInstance.current.geoObjects.add(placemark.current);
+            },
+            (error) => {
+                alert("Could not get your location: " + error.message);
+            }
+        );
+    };
 
     const handleSave = () => {
         if (coordinates && locationName.trim()) {
@@ -34,6 +68,9 @@ const YandexMapModal = ({ onClose, onSave }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-5 rounded-lg text-black flex flex-col gap-3">
                 <h2 className="text-xl font-bold">Select a Location</h2>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded mb-2" onClick={goToMyLocation}>
+                    📍 Go to My Location
+                </button>
                 <div ref={mapRef} className="w-[400px] h-[300px]"></div>
                 <input
                     type="text"
@@ -42,11 +79,11 @@ const YandexMapModal = ({ onClose, onSave }) => {
                     onChange={(e) => setLocationName(e.target.value)}
                     placeholder="Enter location name"
                 />
-                <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSave}>
-                    Save Location
+                <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleSave}>
+                    ✅ Save Location
                 </button>
                 <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={onClose}>
-                    Cancel
+                    ❌ Cancel
                 </button>
             </div>
         </div>
