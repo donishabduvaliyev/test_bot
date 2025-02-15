@@ -45,14 +45,19 @@ function CustomerInfo() {
             }
         });
     };
-
     const handleSubmitLocation = () => {
         if (newLocation.name.trim()) {
-            setLocations(prev => [...prev, { ...newLocation, id: prev.length + 1 }]);
-            setSelectedLocation(locations.length + 1);
+            const updatedLocations = [...locations, { ...newLocation, id: locations.length + 1 }];
+            setLocations(updatedLocations);
+            setSelectedLocation(updatedLocations.length);
             setShowLocationModal(false);
         }
     };
+    if (selectedRadio === "delivery" && !selectedLocation) {
+        alert("Please select a location for delivery.");
+        return;
+    }
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
