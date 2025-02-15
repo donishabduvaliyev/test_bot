@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+
+const mapContainerStyle = {
+    width: "100%",
+    height: "400px"
+};
+const defaultCenter = { lat: 40.7128, lng: -74.0060 }; // Default to New York
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
@@ -8,13 +15,12 @@ function CustomerInfo() {
     const [selectedLocation, setSelectedLocation] = useState("");
     const [comment, setComment] = useState("");
     const [showLocationModal, setShowLocationModal] = useState(false);
-    const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
+    const [newLocation, setNewLocation] = useState({ name: "", coordinates: null });
     const navigate = useNavigate();
 
     useEffect(() => {
         if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
             const chatId = window.Telegram.WebApp.initDataUnsafe.user.id;
-
             fetch(`http://localhost:5000/get-phone/${chatId}`)
                 .then((res) => res.json())
                 .then((data) => {
@@ -34,33 +40,28 @@ function CustomerInfo() {
         }
     }, []);
 
-    const requestLocation = () => {
-        window.Telegram.WebApp.openLocationDialog({}, (location) => {
-            if (location) {
-                setNewLocation({
-                    name: "",
-                    coordinates: `${location.latitude},${location.longitude}`
-                });
-                setShowLocationModal(true);
-            }
-        });
+    const handleMapClick = (event) => {
+        setNewLocation(prev => ({
+            ...prev,
+            coordinates: { lat: event.latLng.lat(), lng: event.latLng.lng() }
+        }));
     };
+
     const handleSubmitLocation = () => {
-        if (newLocation.name.trim()) {
+        if (newLocation.name.trim() && newLocation.coordinates) {
             const updatedLocations = [...locations, { ...newLocation, id: locations.length + 1 }];
             setLocations(updatedLocations);
             setSelectedLocation(updatedLocations.length);
             setShowLocationModal(false);
         }
     };
-    if (selectedRadio === "delivery" && !selectedLocation) {
-        alert("Please select a location for delivery.");
-        return;
-    }
-    
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (selectedRadio === "delivery" && !selectedLocation) {
+            alert("Please select a location for delivery.");
+            return;
+        }
         const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
         console.log({ ...userInfo, deliveryType: selectedRadio, selectedLoc, comment });
         alert("Form submitted successfully!");
@@ -85,14 +86,14 @@ function CustomerInfo() {
                 {selectedRadio === "delivery" && (
                     <div className="flex flex-col gap-2">
                         <select className="p-2 bg-gray-300 text-black rounded" value={selectedLocation} onChange={(e) => {
-                            if (e.target.value === "new") requestLocation();
+                            if (e.target.value === "new") setShowLocationModal(true);
                             else setSelectedLocation(e.target.value);
                         }}>
                             <option value="">Select a location</option>
                             {locations.map(loc => (
                                 <option key={loc.id} value={loc.id}>{loc.name}</option>
                             ))}
-                            <option value="new">+ Get Location from Telegram</option>
+                            <option value="new">+ Select Location on Map</option>
                         </select>
                     </div>
                 )}
@@ -104,7 +105,12 @@ function CustomerInfo() {
             {showLocationModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-5 rounded-lg text-black flex flex-col gap-3">
-                        <h2 className="text-xl font-bold">Enter Location Name</h2>
+                        <h2 className="text-xl font-bold">Select Location</h2>
+                        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+                            <GoogleMap mapContainerStyle={mapContainerStyle} center={defaultCenter} zoom={10} onClick={handleMapClick}>
+                                {newLocation.coordinates && <Marker position={newLocation.coordinates} />}
+                            </GoogleMap>
+                        </LoadScript>
                         <input type="text" className="p-2 border rounded" value={newLocation.name} onChange={(e) => setNewLocation(prev => ({ ...prev, name: e.target.value }))} placeholder="Location Name" />
                         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSubmitLocation}>Save Location</button>
                         <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setShowLocationModal(false)}>Cancel</button>
