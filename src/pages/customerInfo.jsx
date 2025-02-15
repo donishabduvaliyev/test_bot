@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-
-const mapContainerStyle = {
-    width: "100%",
-    height: "400px"
-};
-const defaultCenter = { lat: 40.7128, lng: -74.0060 }; // Default to New York
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
@@ -15,12 +8,13 @@ function CustomerInfo() {
     const [selectedLocation, setSelectedLocation] = useState("");
     const [comment, setComment] = useState("");
     const [showLocationModal, setShowLocationModal] = useState(false);
-    const [newLocation, setNewLocation] = useState({ name: "", coordinates: null });
+    const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
     const navigate = useNavigate();
 
     useEffect(() => {
         if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
             const chatId = window.Telegram.WebApp.initDataUnsafe.user.id;
+
             fetch(`http://localhost:5000/get-phone/${chatId}`)
                 .then((res) => res.json())
                 .then((data) => {
@@ -40,28 +34,39 @@ function CustomerInfo() {
         }
     }, []);
 
-    const handleMapClick = (event) => {
-        setNewLocation(prev => ({
-            ...prev,
-            coordinates: { lat: event.latLng.lat(), lng: event.latLng.lng() }
-        }));
-    };
+    useEffect(() => {
+        if (showLocationModal) {
+            window.ymaps.ready(() => {
+                const map = new window.ymaps.Map("yandex-map", {
+                    center: [55.751574, 37.573856], // Default to Moscow, change if needed
+                    zoom: 10,
+                });
+
+                let placemark;
+                map.events.add("click", function (e) {
+                    const coords = e.get("coords");
+                    if (placemark) {
+                        placemark.geometry.setCoordinates(coords);
+                    } else {
+                        placemark = new window.ymaps.Placemark(coords, {}, { draggable: true });
+                        map.geoObjects.add(placemark);
+                    }
+                    setNewLocation(prev => ({ ...prev, coordinates: coords.join(",") }));
+                });
+            });
+        }
+    }, [showLocationModal]);
 
     const handleSubmitLocation = () => {
-        if (newLocation.name.trim() && newLocation.coordinates) {
-            const updatedLocations = [...locations, { ...newLocation, id: locations.length + 1 }];
-            setLocations(updatedLocations);
-            setSelectedLocation(updatedLocations.length);
+        if (newLocation.name.trim()) {
+            setLocations(prev => [...prev, { ...newLocation, id: prev.length + 1 }]);
+            setSelectedLocation(locations.length + 1);
             setShowLocationModal(false);
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (selectedRadio === "delivery" && !selectedLocation) {
-            alert("Please select a location for delivery.");
-            return;
-        }
         const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
         console.log({ ...userInfo, deliveryType: selectedRadio, selectedLoc, comment });
         alert("Form submitted successfully!");
@@ -106,11 +111,7 @@ function CustomerInfo() {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-5 rounded-lg text-black flex flex-col gap-3">
                         <h2 className="text-xl font-bold">Select Location</h2>
-                        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-                            <GoogleMap mapContainerStyle={mapContainerStyle} center={defaultCenter} zoom={10} onClick={handleMapClick}>
-                                {newLocation.coordinates && <Marker position={newLocation.coordinates} />}
-                            </GoogleMap>
-                        </LoadScript>
+                        <div id="yandex-map" className="w-full h-64" />
                         <input type="text" className="p-2 border rounded" value={newLocation.name} onChange={(e) => setNewLocation(prev => ({ ...prev, name: e.target.value }))} placeholder="Location Name" />
                         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleSubmitLocation}>Save Location</button>
                         <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setShowLocationModal(false)}>Cancel</button>
