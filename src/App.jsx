@@ -91,7 +91,7 @@ function App() {
     tg.MainButton.hide(); // Hide by default
 
     const handleMainButtonClick = () => {
-      navigate("adressInfo");
+      navigate("varoq");
     };
 
     tg.MainButton.onClick(handleMainButtonClick);
@@ -128,7 +128,7 @@ function App() {
           <a
             key={section.id}
             href={`#${section.id}`}
-            className={`text-yellow-400 text-[15px] transition ${activeSection === section.id ? "underline font-bold" : ""
+            className={`text-yellow-400 text-[15px] mt-[50px] transition ${activeSection === section.id ? "underline font-bold" : ""
               }`}
           >
             {section.title}
