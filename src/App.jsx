@@ -40,9 +40,9 @@ function App() {
   // ✅ Check if Telegram WebApp is available
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      console.log("Telegram WebApp detected:", window.Telegram);
+      alert("Telegram WebApp detected:", window.Telegram);
     } else {
-      console.error("Telegram WebApp is not available!");
+      alert("Telegram WebApp is not available!");
     }
   }, []);
 

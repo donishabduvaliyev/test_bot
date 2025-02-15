@@ -6,11 +6,14 @@ import CheckTheCart from './pages/checkout'
 
 function Router() {
   return (
-   <Routes >
-    <Route path='/' index element={< App />}  />
-    <Route path='varoq' element={<CheckTheCart />} />
-    <Route path='adressInfo' element={<CustomerInfo />} />
-   </Routes>
+    <Routes >
+      <Route path='/' index element={< App />}  >
+
+        <Route path='varoq' element={<CheckTheCart />} />
+      </Route>
+
+      <Route path='adressInfo' element={<CustomerInfo />} />
+    </Routes>
   )
 }
 
