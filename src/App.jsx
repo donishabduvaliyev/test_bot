@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import Cards from "./components/cards";
 import { sections } from "./data";
 import { useCart } from "./components/context";
+import { button } from "framer-motion/client";
 
 function App() {
   const [activeSection, setActiveSection] = useState("");
-  const [cart, setCart] = useCart();
+  const { cart, setCart , navigate } = useCart();
   const [count, setCount] = useState(1);
-  const navigate = useNavigate();
 
 
 
@@ -35,17 +35,12 @@ function App() {
   };
 
 
+function handleNavigate() {
+  navigate("/varoq");
+  
+}
 
 
-
-  // ✅ Check if Telegram WebApp is available
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      console.log("Telegram WebApp detected:", window.Telegram);
-    } else {
-     console.log("Telegram WebApp is not available!");
-    }
-  }, []);
 
   // ✅ Send Message to Telegram Bot only ONCE (on mount)
   useEffect(() => {
@@ -58,6 +53,8 @@ function App() {
       .then(data => console.log("Message sent:", data))
       .catch(err => console.error("Error sending message:", err));
   }, []);
+  console.log(cart.length);
+  
 
   // ✅ Intersection Observer for tracking active section
   useEffect(() => {
@@ -81,40 +78,10 @@ function App() {
   }, [sections]); // Added `sections` as a dependency
 
   // ✅ Telegram Web App Integration
-  useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    if (!tg) return;
-
-    tg.expand(); // Expands the web app to full screen
-
-    // Set up the main button
-    tg.MainButton.setText(`Go to Checkout ${cart}`);
-    tg.MainButton.hide(); // Hide by default
-
-    const handleMainButtonClick = () => {
-      navigate("/varoq");
-    };
-
-    tg.MainButton.onClick(handleMainButtonClick);
-
-    return () => {
-      tg.MainButton.offClick(handleMainButtonClick); // Cleanup on unmount
-    };
-  }, [navigate]);
+ 
 
   // ✅ Show/Hide Telegram Main Button based on cart content
-  useEffect(() => {
-    console.log("Cart updated:", cart);
-
-    const tg = window.Telegram.WebApp;
-    if (!tg) return;
-
-    if (cart.length > 0) {
-      tg.MainButton.show();
-    } else {
-      tg.MainButton.hide();
-    }
-  }, [cart]);
+  
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -167,6 +134,11 @@ function App() {
           />
         </motion.section>
       ))}
+
+
+      {
+        cart.length >0 ? <button className="text-white text-[50px] bg-amber-400 w-[400px]" onClick={handleNavigate}>sALOM</button> : ''
+      }
     </div>
   );
 }

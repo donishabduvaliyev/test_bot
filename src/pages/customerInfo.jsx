@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import YandexMapModal from "../components/yandexMaps";
+import { useCart } from "../components/context";
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
@@ -10,7 +11,7 @@ function CustomerInfo() {
     const [comment, setComment] = useState("");
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
-    const navigate = useNavigate();
+    const {navigate , cart} = useCart()
 
     useEffect(() => {
         if (window.Telegram.WebApp.initDataUnsafe?.user?.id) {
@@ -124,3 +125,38 @@ function CustomerInfo() {
 }
 
 export default CustomerInfo;
+
+
+// useEffect(() => {
+//     const tg = window.Telegram.WebApp;
+//     if (!tg) return;
+
+//     tg.expand(); // Expands the web app to full screen
+
+//     // Set up the main button
+//     tg.MainButton.setText(`Go to Checkout ${cart}`);
+//     tg.MainButton.hide(); // Hide by default
+
+//     const handleMainButtonClick = () => {
+//       navigate("/varoq");
+//     };
+
+//     tg.MainButton.onClick(handleMainButtonClick);
+
+//     return () => {
+//       tg.MainButton.offClick(handleMainButtonClick); // Cleanup on unmount
+//     };
+//   }, [navigate , cart]);
+
+// useEffect(() => {
+//     console.log("Cart updated:", cart);
+
+//     const tg = window.Telegram.WebApp;
+//     if (!tg) return;
+
+//     if (cart.length > 0) {
+//       tg.MainButton.show();
+//     } else {
+//       tg.MainButton.hide();
+//     }
+//   }, [cart]);
