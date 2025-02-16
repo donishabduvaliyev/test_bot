@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Cards from "./components/cards";
 import { sections } from "./data";
+import { useCart } from "./components/context";
 
 function App() {
   const [activeSection, setActiveSection] = useState("");
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useCart();
   const [count, setCount] = useState(1);
   const navigate = useNavigate();
 

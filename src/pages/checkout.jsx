@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useCart } from "../components/context";
 
-function CheckTheCart({ section, cart, setCart }) {
+function CheckTheCart() {
 
     const calculateTotalPrice = (price, quantity,) => {
         return (price * quantity);
 
     };
-
+   const [cart ,setCart] =useCart()
+    
 
     function handleDelete(mahl) {
         if (mahl.quantity > 1) {
