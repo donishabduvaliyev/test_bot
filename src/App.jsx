@@ -91,7 +91,7 @@ function App() {
     tg.MainButton.hide(); // Hide by default
 
     const handleMainButtonClick = () => {
-      navigate("varoq");
+      navigate("/varoq");
     };
 
     tg.MainButton.onClick(handleMainButtonClick);
