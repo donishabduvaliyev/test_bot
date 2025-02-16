@@ -129,7 +129,7 @@ function App() {
           <a
             key={section.id}
             href={`#${section.id}`}
-            className={`text-yellow-400 text-[15px] mt-[50px] transition ${activeSection === section.id ? "underline font-bold" : ""
+            className={`text-yellow-400 text-[15px]  transition ${activeSection === section.id ? "underline font-bold" : ""
               }`}
           >
             {section.title}
@@ -142,7 +142,7 @@ function App() {
         <motion.section
           key={section.id}
           id={section.id}
-          className="min-h-screen flex flex-col items-center justify-center p-8"
+          className="min-h-screen flex mt-[50px] flex-col items-center justify-center p-8"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
