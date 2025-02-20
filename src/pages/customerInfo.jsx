@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useCart } from "../components/context";
 import YandexMapModal from "../components/yandexMaps";
 
