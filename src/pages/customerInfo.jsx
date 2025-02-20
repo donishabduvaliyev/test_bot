@@ -23,6 +23,17 @@ function CustomerInfo() {
         }
     }, [tg]);
 
+    useEffect(() => {
+        const tg = window.Telegram.WebApp;
+        
+        if (tg) {
+            tg.expand(); // Expands to full screen
+            console.log("✅ Telegram WebApp initialized", tg);
+        } else {
+            console.error("❌ Telegram WebApp is not available");
+        }
+    }, []);
+
     // ✅ Load Telegram User Data
     useEffect(() => {
         if (tg?.initDataUnsafe?.user) {
@@ -31,19 +42,19 @@ function CustomerInfo() {
     }, [tg]);
 
     // ✅ Fetch User's Phone Number from Backend
-    useEffect(() => {
-        const chatId = tg?.initDataUnsafe?.user?.id;
-        if (chatId) {
-            fetch(`https://localhost:5000/get-phone/${chatId}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.phoneNumber) {
-                        setUserInfo(prev => ({ ...prev, phone: data.phoneNumber }));
-                    }
-                })
-                .catch((err) => console.error("Fetch error:", err));
-        }
-    }, [tg]);
+    // useEffect(() => {
+    //     const chatId = tg?.initDataUnsafe?.user?.id;
+    //     if (chatId) {
+    //         fetch(`http://localhost:5000/get-phone/${chatId}`)
+    //             .then((res) => res.json())
+    //             .then((data) => {
+    //                 if (data.phoneNumber) {
+    //                     setUserInfo(prev => ({ ...prev, phone: data.phoneNumber }));
+    //                 }
+    //             })
+    //             .catch((err) => console.error("Fetch error:", err));
+    //     }
+    // }, [tg]);
 
     // ✅ Show/Hide Main Button Based on Cart Items
     useEffect(() => {
