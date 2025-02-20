@@ -13,9 +13,9 @@ function CustomerInfo() {
 
     const { navigate, cart } = useCart();
 
+    const tg = window.Telegram.WebApp;
 
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
         if (tg) {
             tg.ready();
         }
@@ -24,6 +24,8 @@ function CustomerInfo() {
 
     // ✅ Expand WebApp and set initial MainButton state
     useEffect(() => {
+        const tg = window.Telegram.WebApp;
+
         if (tg) {
             tg.expand();
             tg.MainButton.setText(`Send Order (${cart.length} items)`);
@@ -44,6 +46,8 @@ function CustomerInfo() {
 
     // ✅ Load Telegram User Data
     useEffect(() => {
+        const tg = window.Telegram.WebApp;
+
         if (tg?.initDataUnsafe?.user) {
             setUserInfo(prev => ({ ...prev, name: tg.initDataUnsafe.user.first_name }));
         }
