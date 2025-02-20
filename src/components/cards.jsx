@@ -31,13 +31,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
         }
     }
 
-    const toppingsList = [
-        { name: "Mozzarella", price: 24000 },
-        { name: "Pepperoni", price: 20000 },
-        { name: "Mushrooms", price: 10000 },
-        { name: "Olives", price: 10000 },
-        { name: "Onions", price: 10000 },
-    ];
+   
 
     // **Calculate Total Price Correctly**
     const totalPrice =
@@ -177,7 +171,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
                                     <h1>Optional</h1>
                                 </span>
                                 <div className="bg-amber-300 p-2">
-                                    {toppingsList.map((topping, index) => (
+                                    {selectedFood.toppings.map((topping, index) => (
                                         <div key={index} className="flex justify-between">
                                             <input
                                                 type="checkbox"

@@ -1,24 +1,201 @@
-export const sections = [
+export const sections =  [
+   
     {
-        id: "exclusive", title: "Exclusive Combo", items: [{ id: '0', name: "Steak or Donar", price: "79000", image: '../public/img/image.png' },
-        {  id: '1' ,  name: "Steak or Donar", price: "79000", image: '../public/img/image.png'  },
-        {  id: '2' ,  name: "Steak or Donar", price: "79000", image: '../public/img/image.png' },
-        {  id: '3' ,  name: "Steak or Donar", price: "79000", image: '../public/img/image.png' }
-        ]
-    },
-    {
-        id: "pizza", title: "Pizza", items: [
-            {  id: '4' ,  name: "Deluxe", price: "69000", image: '../public/img/image.png' },
-            {  id: '5' ,  name: "BBQ Chicken", price: "69000", image: '../public/img/image.png' },
-            {  id: '6' ,  name: "Pepper Steak", price: "69000", image: '../public/img/image.png' },
-            {  id: '7'  , name: "Chicken Broccoli", price: "59000", image: '../public/img/image.png' },
-        ]
-    },
-    {
-        id: "burger", title: "Burgers", items: [{  id: '' ,   name: "Classic Burger", price: "45000", image: '../public/img/image.png' },
-        {  id: '8'  , name: "Steak or Donar", price: "79000", image: '../public/img/image.png' },
-        {  id: '9'  , name: "Steak or Donar", price: "79000", image: '../public/img/image.png' },
-        {  id: '10' ,  name: "Steak or Donar", price: "79000", image: '../public/img/image.png' }
-        ]
-    }
-];
+          "id": "combo",
+          "title": "combo ",
+          " items": 
+              [
+                  {
+                      "id": "1",
+                      "name": "Steak or Donar",
+                      "price": "79000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Extra Cheese", "price": "5000" },
+                          { "name": "Spicy Sauce", "price": "3000" },
+                          { "name": "Garlic Sauce", "price": "2500" },
+                          { "name": "Jalapenos", "price": "4000" }
+                      ]
+                  },
+                  {
+                      "id": "2",
+                      "name": "Pepperoni Pizza",
+                      "price": "85000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Olives", "price": "4000" },
+                          { "name": "Mushrooms", "price": "4500" },
+                          { "name": "Extra Pepperoni", "price": "6000" },
+                          { "name": "Parmesan", "price": "5000" }
+                      ]
+                  },
+                  {
+                      "id": "3",
+                      "name": "BBQ Chicken Pizza",
+                      "price": "90000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Extra BBQ Sauce", "price": "3500" },
+                          { "name": "Onions", "price": "4000" },
+                          { "name": "Smoked Bacon", "price": "7000" },
+                          { "name": "Mozzarella", "price": "5500" }
+                      ]
+                  },
+                  {
+                      "id": "4",
+                      "name": "Margherita Pizza",
+                      "price": "75000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Fresh Basil", "price": "2500" },
+                          { "name": "Extra Cheese", "price": "5000" },
+                          { "name": "Tomatoes", "price": "3000" },
+                          { "name": "Balsamic Glaze", "price": "3500" }
+                      ]
+                  }
+                      ]
+                  
+              
+ 
+      },
+      {
+          "id": "pizza",
+          "title": "pizza",
+          "items":   [
+                  {
+                      "id": "1",
+                      "name": "Steak or Donar",
+                      "price": "79000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Extra Cheese", "price": "5000" },
+                          { "name": "Spicy Sauce", "price": "3000" },
+                          { "name": "Garlic Sauce", "price": "2500" },
+                          { "name": "Jalapenos", "price": "4000" }
+                      ]
+                  },
+                  {
+                      "id": "2",
+                      "name": "Pepperoni Pizza",
+                      "price": "85000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Olives", "price": "4000" },
+                          { "name": "Mushrooms", "price": "4500" },
+                          { "name": "Extra Pepperoni", "price": "6000" },
+                          { "name": "Parmesan", "price": "5000" }
+                      ]
+                  },
+                  {
+                      "id": "3",
+                      "name": "BBQ Chicken Pizza",
+                      "price": "90000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Extra BBQ Sauce", "price": "3500" },
+                          { "name": "Onions", "price": "4000" },
+                          { "name": "Smoked Bacon", "price": "7000" },
+                          { "name": "Mozzarella", "price": "5500" }
+                      ]
+                  },
+                  {
+                      "id": "4",
+                      "name": "Margherita Pizza",
+                      "price": "75000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Fresh Basil", "price": "2500" },
+                          { "name": "Extra Cheese", "price": "5000" },
+                          { "name": "Tomatoes", "price": "3000" },
+                          { "name": "Balsamic Glaze", "price": "3500" }
+                      ]
+                  }
+                 
+    ]
+    
+
+      },
+      {
+          "id": "burger",
+          "title": "burger",
+          "items": 
+              [
+                  {
+                      "id": "1",
+                      "name": "Steak or Donar",
+                      "price": "79000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Extra Cheese", "price": "5000" },
+                          { "name": "Spicy Sauce", "price": "3000" },
+                          { "name": "Garlic Sauce", "price": "2500" },
+                          { "name": "Jalapenos", "price": "4000" }
+                      ]
+                  },
+                  {
+                      "id": "2",
+                      "name": "Pepperoni Pizza",
+                      "price": "85000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Olives", "price": "4000" },
+                          { "name": "Mushrooms", "price": "4500" },
+                          { "name": "Extra Pepperoni", "price": "6000" },
+                          { "name": "Parmesan", "price": "5000" }
+                      ]
+                  },
+                  {
+                      "id": "3",
+                      "name": "BBQ Chicken Pizza",
+                      "price": "90000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Extra BBQ Sauce", "price": "3500" },
+                          { "name": "Onions", "price": "4000" },
+                          { "name": "Smoked Bacon", "price": "7000" },
+                          { "name": "Mozzarella", "price": "5500" }
+                      ]
+                  },
+                  {
+                      "id": "4",
+                      "name": "Margherita Pizza",
+                      "price": "75000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Fresh Basil", "price": "2500" },
+                          { "name": "Extra Cheese", "price": "5000" },
+                          { "name": "Tomatoes", "price": "3000" },
+                          { "name": "Balsamic Glaze", "price": "3500" }
+                      ]
+                  },
+                  {
+                      "id": "5",
+                      "name": "Veggie Supreme Pizza",
+                      "price": "82000",
+                      "image": "/img/image.png",
+                      "category": "Pizza",
+                      "toppings": [
+                          { "name": "Bell Peppers", "price": "3500" },
+                          { "name": "Black Olives", "price": "4000" },
+                          { "name": "Red Onions", "price": "3500" },
+                          { "name": "Feta Cheese", "price": "6000" }
+                      ]
+                  }
+              ]
+  
+      }
+
+]
+

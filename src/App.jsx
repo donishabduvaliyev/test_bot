@@ -2,18 +2,15 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Cards from "./components/cards";
-import { sections } from "./data";
+// import { sections } from "./data";
 import { useCart } from "./components/context";
-import { button } from "framer-motion/client";
+import { button, section } from "framer-motion/client";
+import axios from "axios";
 
 function App() {
   const [activeSection, setActiveSection] = useState("");
-  const { cart, setCart , navigate } = useCart();
+  const { cart, setCart, navigate, products } = useCart();
   const [count, setCount] = useState(1);
-
-
-
-
   const [chatId, setChatId] = useState("");
   const [message, setMessage] = useState("");
 
@@ -35,26 +32,35 @@ function App() {
   };
 
 
-function handleNavigate() {
-  navigate("/varoq");
-  
-}
+  function handleNavigate() {
+    navigate("/varoq");
+
+  }
 
 
 
-  // ✅ Send Message to Telegram Bot only ONCE (on mount)
-  useEffect(() => {
-    fetch("http://localhost:5000/send-message", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chatId: window.Telegram.WebApp.chatId, message: "Hello from React!" }),
-    })
-      .then(res => res.json())
-      .then(data => console.log("Message sent:", data))
-      .catch(err => console.error("Error sending message:", err));
-  }, []);
-  console.log(cart.length);
-  
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // console.log(products);
+
+ let  sections = products
+
+  // console.log(cart.length);
+
 
   // ✅ Intersection Observer for tracking active section
   useEffect(() => {
@@ -78,10 +84,10 @@ function handleNavigate() {
   }, [sections]); // Added `sections` as a dependency
 
   // ✅ Telegram Web App Integration
- 
+
 
   // ✅ Show/Hide Telegram Main Button based on cart content
-  
+
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -137,7 +143,7 @@ function handleNavigate() {
 
 
       {
-        cart.length >0 ? <button className="text-white text-[50px] bg-amber-400 w-[400px]" onClick={handleNavigate}>sALOM</button> : ''
+        cart.length > 0 ? <button className="text-white text-[50px] bg-amber-400 w-[400px]" onClick={handleNavigate}>sALOM</button> : ''
       }
     </div>
   );

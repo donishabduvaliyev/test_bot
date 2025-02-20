@@ -1,18 +1,54 @@
-import { createContext, useContext, useState } from "react";
+import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const cartContext = createContext()
 
-export const CartProvider = ({children}) =>{
-const [cart ,setCart] = useState([])
-const navigate = useNavigate()
+export const CartProvider = ({ children }) => {
+    const [cart, setCart] = useState([])
+    const navigate = useNavigate()
 
 
-return (
-    <cartContext.Provider value={{cart, setCart , navigate}} >
-        {children}
-    </cartContext.Provider>
-)
+    const [products, setProducts] = useState([]);
+
+
+
+
+
+
+
+
+
+    useEffect(() => {
+
+        axios.get("http://localhost:5000/api/products")
+            .then((response) => {
+
+                if (Array.isArray(response.data)) {
+                    setProducts(response.data);
+                    console.log(response.data);
+
+
+                    // ✅ Only update state if it's an array
+                } else {
+                    console.error("❌ Unexpected API response format:", response.data);
+                }
+            })
+            .catch((error) => {
+                console.error("❌ Error fetching data:", error);
+            });
+    }, []);
+
+
+
+
+
+
+    return (
+        <cartContext.Provider value={{ cart, setCart, navigate, products }} >
+            {children}
+        </cartContext.Provider>
+    )
 
 }
 
@@ -21,4 +57,4 @@ return (
 
 export const useCart = () => {
     return useContext(cartContext);
-  };
+};
