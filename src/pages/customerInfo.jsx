@@ -34,7 +34,7 @@ function CustomerInfo() {
     useEffect(() => {
         const chatId = tg?.initDataUnsafe?.user?.id;
         if (chatId) {
-            fetch(`https://your-backend-url.com/get-phone/${chatId}`)
+            fetch(`https://localhost:5000/get-phone/${chatId}`)
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.phoneNumber) {
