@@ -20,7 +20,7 @@ function CustomerInfo() {
             tg.ready();
         }
     }, []);
-    
+
 
     // ✅ Expand WebApp and set initial MainButton state
     useEffect(() => {
@@ -33,7 +33,7 @@ function CustomerInfo() {
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;
-        
+
         if (tg) {
             tg.expand(); // Expands to full screen
             console.log("✅ Telegram WebApp initialized", tg);
@@ -75,6 +75,9 @@ function CustomerInfo() {
 
     // ✅ Send User & Cart Data to Telegram on Main Button Click
     useEffect(() => {
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
+
         const handleMainButtonClick = () => {
             const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
 
@@ -99,17 +102,16 @@ function CustomerInfo() {
                 }
             ];
 
-            tg?.sendData(JSON.stringify(orderData)); // Send order data to Telegram bot
+            tg.sendData(JSON.stringify(orderData)); // Send order data to Telegram bot
             alert("Order Sent!");
             navigate("/");
         };
 
-        tg?.MainButton.onClick(handleMainButtonClick);
-
+        tg.MainButton.onClick(handleMainButtonClick);
         return () => {
-            tg?.MainButton.offClick(handleMainButtonClick);
+            tg.MainButton.offClick(handleMainButtonClick);
         };
-    }, [navigate, tg, userInfo, selectedRadio, selectedLocation, comment, cart, locations]);
+    }, [navigate, userInfo, selectedRadio, selectedLocation, comment, cart, locations]);
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-5">
