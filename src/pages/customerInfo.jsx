@@ -24,7 +24,7 @@ function CustomerInfo() {
     const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
 
 
-    const orderData = [
+    const orderData = useMemo(() => [
         {
             user: {
                 name: userInfo.name,
@@ -43,14 +43,12 @@ function CustomerInfo() {
                 quantity: item.quantity
             }))
         }
-    ];
-
+    ], [userInfo, selectedRadio, selectedLoc, comment, cart]);
 
 
 
     // ✅ Expand WebApp and set initial MainButton state
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
 
         if (tg) {
             tg.expand();
@@ -60,7 +58,6 @@ function CustomerInfo() {
     }, [tg]);
 
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
 
         if (tg) {
             tg.expand(); // Expands to full screen
@@ -72,12 +69,11 @@ function CustomerInfo() {
 
     // ✅ Load Telegram User Data
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
-
         if (tg?.initDataUnsafe?.user) {
             setUserInfo(prev => ({ ...prev, name: tg.initDataUnsafe.user.first_name }));
         }
-    }, [tg]);
+    }, []); // Remove `tg` from dependencies
+
 
     // ✅ Fetch User's Phone Number from Backend
     // useEffect(() => {
@@ -104,21 +100,15 @@ function CustomerInfo() {
     }, [cart, tg]);
 
 
-    const handleMainButtonClick = useCallback(
-        () => {
+    const handleMainButtonClick = useCallback(() => {
+        tg.sendData(JSON.stringify(orderData));
+        alert("Order Sent!");
+        navigate("/");
+    }, [orderData, navigate]); // Ensure dependencies are stable
 
-
-
-            tg.sendData(JSON.stringify(orderData)); // Send order data to Telegram bot
-            alert("Order Sent!");
-            navigate("/");
-        }, [orderData]
-
-    )
 
     // ✅ Send User & Cart Data to Telegram on Main Button Click
     useEffect(() => {
-        const tg = window.Telegram?.WebApp;
         if (!tg) return;
         tg.MainButton.onClick(handleMainButtonClick);
         return () => {
@@ -170,9 +160,11 @@ function CustomerInfo() {
                 <YandexMapModal
                     onClose={() => setShowLocationModal(false)}
                     onSave={(newLoc) => {
-                        setLocations([...locations, { ...newLoc, id: locations.length + 1 }]);
-                        setSelectedLocation(locations.length + 1);
+                        const updatedLocations = [...locations, { ...newLoc, id: locations.length + 1 }];
+                        setLocations(updatedLocations);
+                        setSelectedLocation(updatedLocations[updatedLocations.length - 1].id);
                     }}
+
                 />
             )}
         </div>
