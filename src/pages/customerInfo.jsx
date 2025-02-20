@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useCart } from "../components/context";
 import YandexMapModal from "../components/yandexMaps";
 
@@ -20,6 +20,32 @@ function CustomerInfo() {
             tg.ready();
         }
     }, []);
+
+    const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
+
+
+    const orderData = [
+        {
+            user: {
+                name: userInfo.name,
+                phone: userInfo.phone,
+                deliveryType: selectedRadio,
+                location: selectedLoc ? selectedLoc.name : "Not selected",
+                coordinates: selectedLoc ? selectedLoc.coordinates : "",
+                comment: comment,
+            }
+        },
+        {
+            cart: cart.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity
+            }))
+        }
+    ];
+
+
 
 
     // ✅ Expand WebApp and set initial MainButton state
@@ -77,40 +103,23 @@ function CustomerInfo() {
         }
     }, [cart, tg]);
 
-    // ✅ Send User & Cart Data to Telegram on Main Button Click
-    useEffect(() => {
-        const tg = window.Telegram?.WebApp;
-        if (!tg) return;
 
-        const handleMainButtonClick = () => {
-            const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
+    const handleMainButtonClick = useCallback(
+        () => {
 
-            const orderData = [
-                {
-                    user: {
-                        name: userInfo.name,
-                        phone: userInfo.phone,
-                        deliveryType: selectedRadio,
-                        location: selectedLoc ? selectedLoc.name : "Not selected",
-                        coordinates: selectedLoc ? selectedLoc.coordinates : "",
-                        comment: comment,
-                    }
-                },
-                {
-                    cart: cart.map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        price: item.price,
-                        quantity: item.quantity
-                    }))
-                }
-            ];
+
 
             tg.sendData(JSON.stringify(orderData)); // Send order data to Telegram bot
             alert("Order Sent!");
             navigate("/");
-        };
+        }, [orderData]
 
+    )
+
+    // ✅ Send User & Cart Data to Telegram on Main Button Click
+    useEffect(() => {
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
         tg.MainButton.onClick(handleMainButtonClick);
         return () => {
             tg.MainButton.offClick(handleMainButtonClick);
