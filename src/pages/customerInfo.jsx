@@ -12,7 +12,15 @@ function CustomerInfo() {
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
 
     const { navigate, cart } = useCart();
-    const tg = window.Telegram?.WebApp;
+
+
+    useEffect(() => {
+        const tg = window.Telegram.WebApp;
+        if (tg) {
+            tg.ready();
+        }
+    }, []);
+    
 
     // ✅ Expand WebApp and set initial MainButton state
     useEffect(() => {
