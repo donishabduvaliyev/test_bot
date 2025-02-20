@@ -15,7 +15,7 @@ function App() {
   const [message, setMessage] = useState("");
 
   const sendMessageToBot = () => {
-    fetch("http://localhost:5000/send-message", {
+    fetch("http://192.168.172.33:5000/send-message", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chatId, message })
