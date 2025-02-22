@@ -14,22 +14,47 @@ function App() {
   const [chatId, setChatId] = useState("");
   const [message, setMessage] = useState("");
 
-  const sendMessageToBot = () => {
-    fetch("https://backend-xzwz.onrender.com/send-message", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chatId, message })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          console.log("Message sent successfully!");
-        } else {
-          console.error("Error:", data.error);
-        }
-      })
-      .catch((err) => console.error("Error:", err));
-  };
+
+
+
+
+
+
+//   const tg = window.Telegram?.WebApp;
+
+// useEffect(() => {
+//     if (tg) tg.ready();
+// }, [tg]);
+
+// const sendOrderToBot = () => {
+//     if (!tg) return;
+    
+//     const orderData = {
+//         chatId,
+//         message
+//     };
+
+//     console.log("📤 Sending Data:", orderData); // ✅ Debugging Log
+//     tg.sendData(JSON.stringify(orderData));
+// };
+
+
+//   const sendMessageToBot = () => {
+//     fetch("https://backend-xzwz.onrender.com/send-message", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ chatId, message })
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         if (data.success) {
+//           console.log("Message sent successfully!");
+//         } else {
+//           console.error("Error:", data.error);
+//         }
+//       })
+//       .catch((err) => console.error("Error:", err));
+//   };
 
 
   function handleNavigate() {
