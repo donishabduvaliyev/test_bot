@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
 
     useEffect(() => {
 
-        axios.get("http://192.168.172.33:5000/api/products")
+        axios.get("https://backend-xzwz.onrender.com/api/products")
             .then((response) => {
 
                 if (Array.isArray(response.data)) {
