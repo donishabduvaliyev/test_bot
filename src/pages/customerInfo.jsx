@@ -37,7 +37,8 @@ function CustomerInfo() {
             id: item.id,
             name: item.name,
             price: item.price,
-            quantity: item.quantity
+            quantity: item.quantit,
+            topping: item.topping
         }))
     }), [userInfo, selectedRadio, selectedLoc, comment, cart]);
 
@@ -88,11 +89,16 @@ function CustomerInfo() {
             const data = await response.json();
             if (data.success) {
                 alert("✅ Order sent successfully!");
-                setCart([]);
-                navigate("/");
+
             } else {
                 console.error("❌ Error:", data.error);
             }
+
+            setTimeout(() => {
+                setCart([]);
+                navigate("/");
+            }, 2000);
+
         } catch (err) {
             console.error("❌ Fetch Error:", err);
         }
