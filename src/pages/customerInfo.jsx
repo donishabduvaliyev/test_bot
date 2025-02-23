@@ -11,7 +11,7 @@ function CustomerInfo() {
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
 
-    const { navigate, cart , setCart} = useCart();
+    const { navigate, cart, setCart } = useCart();
 
     // Safely access Telegram WebApp
     const tg = window.Telegram?.WebApp;
@@ -74,7 +74,24 @@ function CustomerInfo() {
     const handleMainButtonClick = useCallback(() => {
         if (!tg) return;
         tg.sendData(JSON.stringify(orderData));
-       
+
+        fetch("https://backend-xzwz.onrender.com/web-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData)
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log("Message sent successfully!");
+                } else {
+                    console.error("Error:", data.error);
+                }
+            })
+            .catch((err) => console.error("Error:", err));
+
+
+
         setTimeout(() => {
             navigate("/");
             setCart([])
