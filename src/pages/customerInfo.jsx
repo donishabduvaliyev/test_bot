@@ -11,7 +11,7 @@ function CustomerInfo() {
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
 
-    const { navigate, cart } = useCart();
+    const { navigate, cart , setCart} = useCart();
 
     // Safely access Telegram WebApp
     const tg = window.Telegram?.WebApp;
@@ -75,6 +75,7 @@ function CustomerInfo() {
         if (!tg) return;
         tg.sendData(JSON.stringify(orderData));
         navigate("/");
+        setCart([])
     }, [orderData, navigate, tg]); // Include tg
 
     // Bind MainButton click handler
