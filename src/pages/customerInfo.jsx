@@ -76,13 +76,14 @@ function CustomerInfo() {
         if (!tg) return;
 
         try {
-            tg.sendData(JSON.stringify(orderData));
 
             const response = await fetch("https://backend-xzwz.onrender.com/web-data", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderData)
             });
+
+            // tg.sendData(JSON.stringify(orderData));
 
             const data = await response.json();
             if (data.success) {
