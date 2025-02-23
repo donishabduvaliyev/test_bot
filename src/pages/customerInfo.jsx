@@ -24,26 +24,23 @@ function CustomerInfo() {
 
     const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
 
-    const orderData = useMemo(() => [
-        {
-            user: {
-                name: userInfo.name,
-                phone: userInfo.phone,
-                deliveryType: selectedRadio,
-                location: selectedLoc ? selectedLoc.name : "Not selected",
-                coordinates: selectedLoc ? selectedLoc.coordinates : "",
-                comment: comment,
-            }
+    const orderData = useMemo(() => ({
+        user: {
+            name: userInfo.name,
+            phone: userInfo.phone,
+            deliveryType: selectedRadio,
+            location: selectedLoc ? selectedLoc.name : "Not selected",
+            coordinates: selectedLoc ? selectedLoc.coordinates : "",
+            comment: comment,
         },
-        {
-            cart: cart.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity
-            }))
-        }
-    ], [userInfo, selectedRadio, selectedLoc, comment, cart]);
+        cart: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+        }))
+    }), [userInfo, selectedRadio, selectedLoc, comment, cart]);
+
 
     // Initialize MainButton text and expand WebApp
     useEffect(() => {
@@ -56,49 +53,50 @@ function CustomerInfo() {
 
     // Load user data from Telegram
     useEffect(() => {
-        if (tg?.initDataUnsafe?.user) {
+        if (tg && tg.initDataUnsafe?.user) {
             setUserInfo(prev => ({ ...prev, name: tg.initDataUnsafe.user.first_name }));
         }
-    }, [tg]); // Add tg as dependency
+    }, []);
+
 
     // Show/hide MainButton based on cart
     useEffect(() => {
         if (!tg) return;
+
         if (cart.length > 0) {
+            tg.MainButton.setText(`Send Order (${cart.length} items)`);
             tg.MainButton.show();
         } else {
             tg.MainButton.hide();
         }
-    }, [cart, tg]);
+    }, [cart.length]);
 
-    const handleMainButtonClick = useCallback(() => {
+
+    const handleMainButtonClick = useCallback(async () => {
         if (!tg) return;
-        tg.sendData(JSON.stringify(orderData));
 
-        fetch("https://backend-xzwz.onrender.com/web-data", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(orderData)
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    console.log("Message sent successfully!");
-                } else {
-                    console.error("Error:", data.error);
-                }
-            })
-            .catch((err) => console.error("Error:", err));
+        try {
+            tg.sendData(JSON.stringify(orderData));
 
+            const response = await fetch("https://backend-xzwz.onrender.com/web-data", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(orderData)
+            });
 
-
-        setTimeout(() => {
-            navigate("/");
-            setCart([])
-        }, 3000);
-
-
-    }, [orderData, navigate, tg]); // Include tg
+            const data = await response.json();
+            if (data.success) {
+                alert("✅ Order sent successfully!");
+                setCart([]);
+                navigate("/");
+            } else {
+                console.error("❌ Error:", data.error);
+            }
+        } catch (err) {
+            console.error("❌ Fetch Error:", err);
+        }
+    }, [orderData, navigate]);
+    // Include tg
 
     // Bind MainButton click handler
     useEffect(() => {
