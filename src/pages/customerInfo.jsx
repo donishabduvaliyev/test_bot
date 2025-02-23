@@ -74,8 +74,13 @@ function CustomerInfo() {
     const handleMainButtonClick = useCallback(() => {
         if (!tg) return;
         tg.sendData(JSON.stringify(orderData));
-        navigate("/");
-        setCart([])
+       
+        setTimeout(() => {
+            navigate("/");
+            setCart([])
+        }, 3000);
+
+
     }, [orderData, navigate, tg]); // Include tg
 
     // Bind MainButton click handler
