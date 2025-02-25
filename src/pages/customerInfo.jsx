@@ -120,7 +120,7 @@ function CustomerInfo() {
             <form className="bg-gray-700 p-5 rounded-lg flex flex-col gap-4">
                 <input type="text" value={userInfo.name} className="p-2 bg-gray-300 text-black rounded"
                     onChange={(e) => setUserInfo(prev => ({ ...prev, name: e.target.value }))} />
-                <input type="text" value={userInfo.phone} className="p-2 bg-gray-300 text-black rounded"
+                <input type="text" placeholder="telefon raqamingiz" value={userInfo.phone} className="p-2 bg-gray-300 text-black rounded"
                     onChange={(e) => setUserInfo(prev => ({ ...prev, phone: e.target.value }))} />
 
                 <div className="flex gap-4">
@@ -151,7 +151,7 @@ function CustomerInfo() {
                 )}
 
                 <textarea placeholder="Comment" className="p-2 bg-gray-300 text-black rounded"
-                    value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
+                    value={comment} onChange={(e) => setComment(e.target.value)}    ></textarea>
             </form>
 
             {showLocationModal && (
