@@ -14,80 +14,12 @@ function App() {
   const [chatId, setChatId] = useState("");
   const [message, setMessage] = useState("");
 
-
-
-
-
-
-
-//   const tg = window.Telegram?.WebApp;
-
-// useEffect(() => {
-//     if (tg) tg.ready();
-// }, [tg]);
-
-// const sendOrderToBot = () => {
-//     if (!tg) return;
-    
-//     const orderData = {
-//         chatId,
-//         message
-//     };
-
-//     console.log("📤 Sending Data:", orderData); // ✅ Debugging Log
-//     tg.sendData(JSON.stringify(orderData));
-// };
-
-
-//   const sendMessageToBot = () => {
-//     fetch("https://backend-xzwz.onrender.com/send-message", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ chatId, message })
-//     })
-//       .then((res) => res.json())
-//       .then((data) => {
-//         if (data.success) {
-//           console.log("Message sent successfully!");
-//         } else {
-//           console.error("Error:", data.error);
-//         }
-//       })
-//       .catch((err) => console.error("Error:", err));
-//   };
-
-
   function handleNavigate() {
     navigate("/varoq");
 
   }
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // console.log(products);
-
  let  sections = products
 
-  // console.log(cart.length);
-
-
-  // ✅ Intersection Observer for tracking active section
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -106,13 +38,7 @@ function App() {
     });
 
     return () => observer.disconnect();
-  }, [sections]); // Added `sections` as a dependency
-
-  // ✅ Telegram Web App Integration
-
-
-  // ✅ Show/Hide Telegram Main Button based on cart content
-
+  }, [sections]);
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -168,7 +94,7 @@ function App() {
 
 
       {
-        cart.length > 0 ? <button className="text-white text-[50px] bg-amber-400 w-[400px]" onClick={handleNavigate}>sALOM</button> : ''
+        cart.length > 0 ? <button className="text-white text-[50px] bg-[#229ED9] w-[400px]" onClick={handleNavigate}>buyurtmalar</button> : ''
       }
     </div>
   );

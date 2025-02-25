@@ -8,9 +8,9 @@ function Cards({ section, cart, setCart ,count,setCount}) {
 
     function handleOpenModal(item) {
         setSelectedFood(item);
-        setSelectedOption(""); // Reset selected size
-        setSelectedToppings([]); // Reset toppings
-        setCount(1); // Reset count
+        setSelectedOption("");
+        setSelectedToppings([]); 
+        setCount(1);
     }
 
     function handleCloseModal() {
@@ -25,62 +25,34 @@ function Cards({ section, cart, setCart ,count,setCount}) {
         const { checked } = event.target;
 
         if (checked) {
-            setSelectedToppings([...selectedToppings, topping]); // Add full topping object
+            setSelectedToppings([...selectedToppings, topping]); 
         } else {
-            setSelectedToppings(selectedToppings.filter((t) => t.name !== topping.name)); // Remove by name
+            setSelectedToppings(selectedToppings.filter((t) => t.name !== topping.name)); 
         }
     }
 
    
 
-    // **Calculate Total Price Correctly**
+
     const totalPrice =
-        (Number(selectedFood?.price || 0) + // Base price
-            Number(selectedOption) + // Size price
-            selectedToppings.reduce((acc, topping) => acc + topping.price, 0) // Sum toppings
+        (Number(selectedFood?.price || 0) + 
+            Number(selectedOption) + 
+            selectedToppings.reduce((acc, topping) => acc + topping.price, 0) 
         ) * count;
 
 
-    // function addToCart() {
-    //     const newItem = {
-    //         ...selectedFood, // Keep original food details
-    //         size: selectedOption, // Add selected size
-    //         toppings: selectedToppings, // Store selected toppings
-    //         quantity: count, // Store selected quantity
-    //         totalPrice: (Number(selectedFood?.price || 0) +
-    //                      Number(selectedOption) +
-    //                      selectedToppings.reduce((acc, topping) => acc + topping.price, 0)) * count // Calculate total price
-    //     };
-    // // if () {
-
-    // // }
-    //     setCart((prevCart) => [...prevCart, newItem]);
-    //      // Add new item to cart without overwriting previous items
-
-    //     console.log("Cart Updated:", newItem); 
-
-    //     // Log the new cart item
-    //     handleCloseModal()
-    // }
-
 
     function addToCart() {
-        // if (!selectedFood || !selectedOption || selectedToppings.length === 0) {
-        //     console.warn("Please select a food item, size, and at least one topping.");
-        //     return;
-        // }
-
-        const newItem = {
-            ...selectedFood, // Keep original food details
-            size: selectedOption, // Add selected size
-            toppings: selectedToppings, // Store selected toppings
-            quantity: count, // Store selected quantity
+             const newItem = {
+            ...selectedFood, 
+            size: selectedOption, 
+            toppings: selectedToppings, 
+            quantity: count, 
             totalPrice: (Number(selectedFood?.price || 0) +
             Number(selectedOption || 0) +
-            selectedToppings.reduce((acc, topping) => acc + (topping.price || 0), 0)) * count // Calculate total price
+            selectedToppings.reduce((acc, topping) => acc + (topping.price || 0), 0)) * count 
         };
 
-        // Preserve previous cart items while adding a new one
         if (selectedOption != '') {
             setCart(prevCart => [...prevCart, newItem]);
             handleCloseModal();
@@ -88,14 +60,13 @@ function Cards({ section, cart, setCart ,count,setCount}) {
             alert('hajmini tanlang')
         )
 
-        // Close modal after adding
     }
 
 
 
     return (
         <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {section.items.map((item, index) => (
                     <motion.div
                         key={index}
@@ -124,7 +95,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
             {/* Modal for choosing menu */}
             {selectedFood && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="bg-white p-4 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto">
+                    <div className="bg-gray-700 p-4 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto">
                         <button className="text-black" onClick={handleCloseModal}>
                             ✖
                         </button>
@@ -135,13 +106,13 @@ function Cards({ section, cart, setCart ,count,setCount}) {
 
                         {/* Sticky size selector */}
                         <div >
-                            <div className="sticky overflow-y-auto top-0 bg-red-400 p-2">
+                            <div className="sticky overflow-y-auto top-0 bg-[#30A3E6] p-2">
                                 <span className="flex justify-between">
                                     <h1>Size</h1>
                                     <h2>Required</h2>
                                 </span>
                                 <div className="flex flex-col">
-                                    <label className="text-black">
+                                    <label className="text-white">
                                         <input
                                             type="radio"
                                             name="pizza-size"
@@ -151,7 +122,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
                                         />
                                         Small 25 cm
                                     </label>
-                                    <label className="text-black">
+                                    <label className="text-white">
                                         <input
                                             type="radio"
                                             name="pizza-size"
@@ -165,12 +136,12 @@ function Cards({ section, cart, setCart ,count,setCount}) {
                             </div>
 
                             {/* Toppings */}
-                            <div className="text-black mt-4">
+                            <div className="text-white mt-4">
                                 <span className="flex justify-between">
                                     <h1>Toppings</h1>
                                     <h1>Optional</h1>
                                 </span>
-                                <div className="bg-amber-300 p-2">
+                                <div className="bg-[#30A3E6] p-2">
                                     {selectedFood.toppings.map((topping, index) => (
                                         <div key={index} className="flex justify-between">
                                             <input
