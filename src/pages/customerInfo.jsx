@@ -4,6 +4,7 @@ import YandexMapModal from "../components/yandexMaps";
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
+    const [userChatID , setUserChatID] = useState({chatID: ""})
     const [selectedRadio, setSelectedRadio] = useState("");
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
@@ -26,6 +27,7 @@ function CustomerInfo() {
 
     const orderData = useMemo(() => ({
         user: {
+            userID: userChatID ,
             name: userInfo.name,
             phone: userInfo.phone,
             deliveryType: selectedRadio,
@@ -40,7 +42,7 @@ function CustomerInfo() {
             quantity: item.quantit,
             topping: item.topping
         }))
-    }), [userInfo, selectedRadio, selectedLoc, comment, cart]);
+    }), [userInfo, selectedRadio, selectedLoc, comment, cart ,userChatID]);
 
 
     // Initialize MainButton text and expand WebApp
@@ -56,8 +58,10 @@ function CustomerInfo() {
     useEffect(() => {
         if (tg && tg.initDataUnsafe?.user) {
             setUserInfo(prev => ({ ...prev, name: tg.initDataUnsafe.user.first_name }));
+            setUserChatID(prev =>({...prev , chatID: tg.initDataUnsafe.user.id}))
         }
     }, []);
+
 
 
     // Show/hide MainButton based on cart
