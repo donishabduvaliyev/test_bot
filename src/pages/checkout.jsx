@@ -1,51 +1,57 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useCart } from "../components/context";
 
 function CheckTheCart() {
-    const { cart, setCart , navigate } = useCart();
+    const { cart, setCart, navigate } = useCart();
 
-    const calculateTotalPrice = (price, quantity) => {
-        return price * quantity;
+    const calculateTotalPrice = (baseTotalPrice, quantity) => {
+        return baseTotalPrice * quantity; // ✅ Multiplies total price including toppings
     };
 
-    function handleDelete(mahl) {
-        if (mahl.quantity > 1) {
-            const updateCart = cart.map((item) =>
-                item.id === mahl.id
+    function handleDelete(item) {
+        if (item.quantity > 1) {
+            const updatedCart = cart.map((cartItem) =>
+                cartItem.id === item.id
                     ? {
-                          ...item,
-                          quantity: item.quantity - 1,
-                          totalPrice: calculateTotalPrice(item.price, item.quantity - 1),
-                      }
-                    : item
+                        ...cartItem,
+                        quantity: cartItem.quantity - 1,
+                        totalPrice: calculateTotalPrice(item.totalPrice / item.quantity, item.quantity - 1), // ✅ Adjust total price based on per-item total price
+                    }
+                    : cartItem
             );
-            setCart(updateCart);
+            setCart(updatedCart);
         } else {
-            setCart((prevCart) => prevCart.filter((item) => item.id !== mahl.id));
+            setCart(prevCart => prevCart.filter((cartItem) => cartItem.id !== item.id));
         }
     }
 
-    function addCount(count) {
-        const updateCart = cart.map((item) =>
-            item.id === count.id
+    function addCount(item) {
+        const updatedCart = cart.map((cartItem) =>
+            cartItem.id === item.id
                 ? {
-                      ...item,
-                      quantity: item.quantity + 1,
-                      totalPrice: calculateTotalPrice(item.price, item.quantity + 1),
-                  }
-                : item
+                    ...cartItem,
+                    quantity: cartItem.quantity + 1,
+                    totalPrice: calculateTotalPrice(item.totalPrice / item.quantity, item.quantity + 1), // ✅ Uses per-item total price to correctly scale
+                }
+                : cartItem
         );
-        setCart(updateCart);
+        setCart(updatedCart);
     }
 
+    useEffect(() => {
+        if (cart.length === 0) {
+            navigate('/');
+        }
+    }, [cart, navigate]);
+
     return (
-        <div className="min-h-screen bg-gray-900 text-center text-white flex flex-col ">
-<div>
-    <button className="text-white text-[50px]" onClick={()=> navigate('/')}>back to store</button>
-<h1>Check The Cart</h1>
-    
-    </div> 
-               <div className="flex flex-col gap-3 items-center">
+        <div className="min-h-screen bg-gray-900 text-center text-white flex flex-col">
+            <div>
+                <button className="text-white text-[50px]" onClick={() => navigate('/')}>Back to Store</button>
+                <h1>Check The Cart</h1>
+            </div>
+
+            <div className="flex flex-col gap-3 items-center">
                 {cart.map((item, index) => (
                     <div
                         key={index}
@@ -54,13 +60,13 @@ function CheckTheCart() {
                         <div className="flex justify-start gap-2">
                             <img
                                 src={item.image}
-                                alt=""
+                                alt={item.name}
                                 className="w-[100px] h-[70px] object-cover"
                             />
                             <span className="flex flex-col w-full">
                                 <div className="flex justify-between">
                                     <h1>{item.name}</h1>
-                                    <h1>{item.price}</h1>
+                                    <h1>${item.price}</h1>
                                 </div>
                                 <div className="text-gray-400 text-[10px]">
                                     <div className="flex justify-between text-[15px] text-gray-300">
@@ -70,37 +76,29 @@ function CheckTheCart() {
                                     {item.toppings.map((topping, i) => (
                                         <div key={i} className="flex justify-between">
                                             <p>{topping.name}</p>
-                                            <p>{topping.price}</p>
+                                            <p>${topping.price}</p>
                                         </div>
                                     ))}
                                 </div>
                             </span>
                         </div>
+
                         <div className="text-start">
                             <div className="flex items-center space-x-1">
-                                <button
-                                    className="rounded bg-green-500 px-2"
-                                    onClick={() => addCount(item)}
-                                >
-                                    +
-                                </button>
+                                <button className="rounded bg-green-500 px-2" onClick={() => addCount(item)}>+</button>
                                 <h1>{item.quantity}</h1>
-                                <button
-                                    className="rounded bg-red-500 px-2"
-                                    onClick={() => handleDelete(item)}
-                                >
-                                    -
-                                </button>
+                                <button className="rounded bg-red-500 px-2" onClick={() => handleDelete(item)}>-</button>
                             </div>
                         </div>
+
                         <div className="text-end">
-                            <h2>Total: ${item.totalPrice.toFixed(2)}</h2>
+                            <h2>Total: ${item.totalPrice.toFixed(2)}</h2> {/* ✅ Correctly updates totalPrice */}
                         </div>
                     </div>
                 ))}
             </div>
 
-            <button className="text-white text-[50px] bg-[#229ED9] w-[400px] " onClick={()=> navigate('/adressInfo')}>Submit Order</button>
+            <button className="text-white text-[50px] bg-[#229ED9] w-[400px]" onClick={() => navigate('/adressInfo')}>Submit Order</button>
         </div>
     );
 }

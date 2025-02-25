@@ -101,12 +101,12 @@ function Cards({ section, cart, setCart ,count,setCount}) {
                         </button>
                         <div>
                             <img src={selectedFood.image} alt={selectedFood.name} className="w-full h-40 object-cover mt-2" />
-                            <h2 className="text-lg text-black">{selectedFood.name}</h2>
+                            <h2 className="text-[22px] text-white">{selectedFood.name}</h2>
                         </div>
 
                         {/* Sticky size selector */}
                         <div >
-                            <div className="sticky overflow-y-auto top-0 bg-[#30A3E6] p-2">
+                            <div className="sticky overflow-y-auto top-0 bg-[#5b656f] p-2">
                                 <span className="flex justify-between">
                                     <h1>Size</h1>
                                     <h2>Required</h2>
@@ -141,7 +141,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
                                     <h1>Toppings</h1>
                                     <h1>Optional</h1>
                                 </span>
-                                <div className="bg-[#30A3E6] p-2">
+                                <div className="bg-[#5b656f] p-2">
                                     {selectedFood.toppings.map((topping, index) => (
                                         <div key={index} className="flex justify-between">
                                             <input
@@ -164,20 +164,20 @@ function Cards({ section, cart, setCart ,count,setCount}) {
                         <div className="text-black flex justify-between mt-4">
                             <div className="flex items-center space-x-2">
                                 <button
-                                    className="px-2 bg-gray-300 rounded"
+                                    className="px-2 bg-green-400 rounded text-white"
                                     onClick={() => setCount(count + 1)}
                                 >
                                     +
                                 </button>
-                                <h1>{count}</h1>
+                                <h1 className="text-white">{count}</h1>
                                 <button
-                                    className="px-2 bg-gray-300 rounded"
+                                    className="px-2 bg-red-400 rounded text-white"
                                     onClick={() => count > 1 && setCount(count - 1)}
                                 >
                                     -
                                 </button>
                             </div>
-                            <button className="bg-green-500 px-4 py-2 rounded text-white"
+                            <button className="bg-[#30A3E6] px-4 py-2 rounded text-white"
                                 onClick={addToCart}
 
                             >
