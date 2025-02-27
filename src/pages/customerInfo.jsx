@@ -5,14 +5,14 @@ import { time } from "framer-motion";
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
-    const [userChatID, setUserChatID] = useState({ chatID: "" })
+    const [userChatID, setUserChatID] = useState()
     const [selectedRadio, setSelectedRadio] = useState("");
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [comment, setComment] = useState("");
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
-    const [orderID, setOrderID] = useState('')
+    const [orderID, setOrderID] = useState(0)
     const [orderTime, setOrderTime] = useState('')
     const { navigate, cart, setCart } = useCart();
 
@@ -44,7 +44,7 @@ function CustomerInfo() {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            topping: item.toppings ,
+            topping: item.toppings,
             totalPrice: item.totalPrice
         })),
         orderId: {
@@ -68,7 +68,7 @@ function CustomerInfo() {
     useEffect(() => {
         if (tg && tg.initDataUnsafe?.user) {
             setUserInfo(prev => ({ ...prev, name: tg.initDataUnsafe.user.first_name }));
-            setUserChatID(prev => ({ ...prev, chatID: tg.initDataUnsafe.user.id }))
+            setUserChatID(tg.initDataUnsafe.user.id)
         }
     }, []);
 
