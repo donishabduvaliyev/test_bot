@@ -18,8 +18,8 @@ function Router() {
     <Routes >
       <Route path='/' index element={< App />} />
 
-   
-        <Route path='varoq' element={<CheckTheCart />} />
+
+      <Route path='varoq' element={<CheckTheCart />} />
 
       <Route path='adressInfo' element={<CustomerInfo />} />
     </Routes>

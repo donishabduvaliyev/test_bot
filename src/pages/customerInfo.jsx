@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useCart } from "../components/context";
 import YandexMapModal from "../components/yandexMaps";
+import { time } from "framer-motion";
 
 function CustomerInfo() {
     const [userInfo, setUserInfo] = useState({ name: "", phone: "" });
-    const [userChatID , setUserChatID] = useState({chatID: ""})
+    const [userChatID, setUserChatID] = useState({ chatID: "" })
     const [selectedRadio, setSelectedRadio] = useState("");
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [comment, setComment] = useState("");
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
-
+    const [orderID, setOrderID] = useState('')
+    const [orderTime, setOrderTime] = useState('')
     const { navigate, cart, setCart } = useCart();
 
     // Safely access Telegram WebApp
@@ -26,8 +28,10 @@ function CustomerInfo() {
     const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
 
     const orderData = useMemo(() => ({
+
+
         user: {
-            userID: userChatID ,
+            userID: userChatID,
             name: userInfo.name,
             phone: userInfo.phone,
             deliveryType: selectedRadio,
@@ -39,10 +43,16 @@ function CustomerInfo() {
             id: item.id,
             name: item.name,
             price: item.price,
-            quantity: item.quantit,
-            topping: item.topping
-        }))
-    }), [userInfo, selectedRadio, selectedLoc, comment, cart ,userChatID]);
+            quantity: item.quantity,
+            topping: item.toppings ,
+            totalPrice: item.totalPrice
+        })),
+        orderId: {
+            id: orderID,
+            time: orderTime,
+        }
+    }
+    ), [userInfo, selectedRadio, selectedLoc, comment, cart, userChatID]);
 
 
     // Initialize MainButton text and expand WebApp
@@ -58,10 +68,23 @@ function CustomerInfo() {
     useEffect(() => {
         if (tg && tg.initDataUnsafe?.user) {
             setUserInfo(prev => ({ ...prev, name: tg.initDataUnsafe.user.first_name }));
-            setUserChatID(prev =>({...prev , chatID: tg.initDataUnsafe.user.id}))
+            setUserChatID(prev => ({ ...prev, chatID: tg.initDataUnsafe.user.id }))
         }
     }, []);
 
+
+    useEffect(() => {
+        let randomNumber = Math.floor(Math.random() * 10000); // Generate a 4-digit random number
+        let currentTime = new Date().getTime(); // Get current timestamp
+
+        setOrderTime(currentTime);
+        let newOrderID = userChatID + randomNumber + currentTime;
+
+        setOrderID(newOrderID);
+
+        console.log("Order Time:", currentTime);
+        console.log("Order ID:", newOrderID);
+    }, [userInfo, selectedRadio, selectedLoc, comment, cart, userChatID]);
 
 
     // Show/hide MainButton based on cart
