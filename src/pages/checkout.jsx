@@ -106,7 +106,7 @@ function CheckTheCart() {
                 ))}
             </div>
 
-            <button className="text-white text-[50px] bg-[#229ED9] w-[400px]" onClick={() => navigate('/adressInfo')}>Submit Order</button>
+            <button className="text-white text-[50px] bg-[#229ED9] w-[400px]" onClick={() => navigate('/adressInfo')}> {orderPrice} lik buyurtma berish</button>
         </div>
     );
 }
