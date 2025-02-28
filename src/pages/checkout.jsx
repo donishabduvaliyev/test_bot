@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useCart } from "../components/context";
 
 function CheckTheCart() {
-    const { cart, setCart, navigate } = useCart();
+    const { cart, setCart, navigate, orderPrice, setOrderPrice } = useCart();
 
     const calculateTotalPrice = (baseTotalPrice, quantity) => {
         return baseTotalPrice * quantity; // ✅ Multiplies total price including toppings
@@ -42,7 +42,15 @@ function CheckTheCart() {
         if (cart.length === 0) {
             navigate('/');
         }
+
+
+        if (cart.length > 0) {
+            const totalOrderPrice = cart.reduce((acc, item) => acc + item.totalPrice, 0);
+            setOrderPrice(totalOrderPrice);
+        }
     }, [cart, navigate]);
+
+
 
     return (
         <div className="min-h-screen bg-gray-900 text-center text-white flex flex-col">

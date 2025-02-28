@@ -11,6 +11,8 @@ export const CartProvider = ({ children }) => {
 
     const [products, setProducts] = useState([]);
 
+    const [OrderPrice, setOrderPrice] = useState()
+
 
 
 
@@ -45,7 +47,7 @@ export const CartProvider = ({ children }) => {
 
 
     return (
-        <cartContext.Provider value={{ cart, setCart, navigate, products }} >
+        <cartContext.Provider value={{ cart, setCart, navigate, products, OrderPrice, setOrderPrice }} >
             {children}
         </cartContext.Provider>
     )
