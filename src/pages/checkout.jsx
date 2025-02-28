@@ -4,8 +4,11 @@ import { useCart } from "../components/context";
 function CheckTheCart() {
     const { cart, setCart, navigate, orderPrice, setOrderPrice } = useCart();
 
-    const calculateTotalPrice = (baseTotalPrice, quantity) => {
-        return baseTotalPrice * quantity; // ✅ Multiplies total price including toppings
+    // Calculates total price including quantity & toppings
+    const calculateTotalPrice = (item) => {
+        const basePrice = item.price; // Store base price of item
+        const toppingsTotal = item.toppings?.reduce((acc, topping) => acc + topping.price, 0) || 0;
+        return (basePrice + toppingsTotal) * item.quantity;
     };
 
     function handleDelete(item) {
@@ -15,7 +18,7 @@ function CheckTheCart() {
                     ? {
                         ...cartItem,
                         quantity: cartItem.quantity - 1,
-                        totalPrice: calculateTotalPrice(item.totalPrice / item.quantity, item.quantity - 1), // ✅ Adjust total price based on per-item total price
+                        totalPrice: calculateTotalPrice({ ...item, quantity: item.quantity - 1 }),
                     }
                     : cartItem
             );
@@ -31,7 +34,7 @@ function CheckTheCart() {
                 ? {
                     ...cartItem,
                     quantity: cartItem.quantity + 1,
-                    totalPrice: calculateTotalPrice(item.totalPrice / item.quantity, item.quantity + 1), // ✅ Uses per-item total price to correctly scale
+                    totalPrice: calculateTotalPrice({ ...item, quantity: item.quantity + 1 }),
                 }
                 : cartItem
         );
@@ -43,70 +46,67 @@ function CheckTheCart() {
             navigate('/');
         }
 
-
         if (cart.length > 0) {
             const totalOrderPrice = cart.reduce((acc, item) => acc + item.totalPrice, 0);
             setOrderPrice(totalOrderPrice);
         }
     }, [cart, navigate]);
 
-
-
     return (
         <div className="min-h-screen bg-gray-900 text-center text-white flex flex-col">
             <div>
-                <button className="text-white text-[50px]" onClick={() => navigate('/')}>Back to Store</button>
-                <h1>Check The Cart</h1>
+                <button className="text-white text-[30px] mb-4 bg-gray-700 px-4 py-2 rounded-lg" onClick={() => navigate('/')}>Back to Store</button>
+                <h1 className="text-3xl font-bold mb-6">Check The Cart</h1>
             </div>
 
             <div className="flex flex-col gap-3 items-center">
                 {cart.map((item, index) => (
                     <div
                         key={index}
-                        className="bg-gray-700 px-2 py-3 rounded-lg shadow-lg flex flex-col justify-around text-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl"
+                        className="bg-gray-700 px-4 py-3 rounded-lg shadow-lg flex flex-col justify-around text-white w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl"
                     >
-                        <div className="flex justify-start gap-2">
+                        <div className="flex justify-start gap-3">
                             <img
                                 src={item.image}
                                 alt={item.name}
-                                className="w-[100px] h-[70px] object-cover"
+                                className="w-[100px] h-[70px] object-cover rounded"
                             />
                             <span className="flex flex-col w-full">
                                 <div className="flex justify-between">
-                                    <h1>{item.name}</h1>
-                                    <h1>${item.price}</h1>
+                                    <h1 className="text-lg font-semibold">{item.name}</h1>
+                                    <h1 className="text-lg">${item.price.toFixed(2)}</h1>
                                 </div>
                                 <div className="text-gray-400 text-[10px]">
                                     <div className="flex justify-between text-[15px] text-gray-300">
                                         <p>Size</p>
                                         <p>{item.size}</p>
                                     </div>
-                                    {item.toppings.map((topping, i) => (
+                                    {item.toppings?.map((topping, i) => (
                                         <div key={i} className="flex justify-between">
                                             <p>{topping.name}</p>
-                                            <p>${topping.price}</p>
+                                            <p>${topping.price.toFixed(2)}</p>
                                         </div>
                                     ))}
                                 </div>
                             </span>
                         </div>
 
-                        <div className="text-start">
-                            <div className="flex items-center space-x-1">
-                                <button className="rounded bg-green-500 px-2" onClick={() => addCount(item)}>+</button>
-                                <h1>{item.quantity}</h1>
-                                <button className="rounded bg-red-500 px-2" onClick={() => handleDelete(item)}>-</button>
+                        <div className="flex justify-between items-center mt-3">
+                            <div className="flex items-center space-x-2">
+                                <button className="rounded bg-green-500 px-3 py-1 text-lg font-bold" onClick={() => addCount(item)}>+</button>
+                                <h1 className="text-lg">{item.quantity}</h1>
+                                <button className="rounded bg-red-500 px-3 py-1 text-lg font-bold" onClick={() => handleDelete(item)}>-</button>
                             </div>
-                        </div>
-
-                        <div className="text-end">
-                            <h2>Total: ${item.totalPrice.toFixed(2)}</h2> {/* ✅ Correctly updates totalPrice */}
+                            <h2 className="text-lg font-semibold">Total: ${item.totalPrice.toFixed(2)}</h2>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <button className="text-white text-[50px] bg-[#229ED9] w-[400px]" onClick={() => navigate('/adressInfo')}> {orderPrice} lik buyurtma berish</button>
+            <button className="text-white text-[30px] bg-[#229ED9] w-[350px] mt-6 py-3 rounded-lg text-lg font-semibold"
+                onClick={() => navigate('/adressInfo')}>
+                {orderPrice.toFixed(2)} UZS lik buyurtma berish
+            </button>
         </div>
     );
 }
