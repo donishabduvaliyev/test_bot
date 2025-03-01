@@ -14,7 +14,7 @@ function CustomerInfo() {
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
     const [orderID, setOrderID] = useState(0)
     const [orderTime, setOrderTime] = useState('')
-    const { navigate, cart, setCart } = useCart();
+    const { navigate, cart, setCart, orderPrice } = useCart();
 
     // Safely access Telegram WebApp
     const tg = window.Telegram?.WebApp;
@@ -50,7 +50,7 @@ function CustomerInfo() {
         orderID: {
             id: orderID,
             time: orderTime,
-            price: orderData
+            price: orderPrice
 
         }
     }
@@ -114,7 +114,6 @@ function CustomerInfo() {
                 body: JSON.stringify(orderData)
             });
 
-            // tg.sendData(JSON.stringify(orderData));
 
             const data = await response.json();
             if (data.success) {
@@ -133,7 +132,7 @@ function CustomerInfo() {
             console.error("❌ Fetch Error:", err);
         }
     }, [orderData, navigate]);
-    // Include tg
+
 
     // Bind MainButton click handler
     useEffect(() => {
@@ -143,7 +142,7 @@ function CustomerInfo() {
     }, [handleMainButtonClick, tg]);
 
     return (
-        // ... (same as before)
+
 
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-5">
             <h1 className="text-2xl font-bold">Fill in Your Information</h1>
