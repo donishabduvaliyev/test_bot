@@ -24,9 +24,11 @@ function Cards({ section, cart, setCart ,count,setCount}) {
 
 if (event.target.value !== '40000') {
     setSelectedSize(25)
+    setSelectedOption(0)
 }
 else{
     setSelectedSize(35)
+    setSelectedOption(40000)
 }
 
         
@@ -128,7 +130,6 @@ else{
                                             type="radio"
                                             name="pizza-size"
                                             value="0"
-                                            checked={selectedOption === "0"}
                                             onChange={handleSizeChange}
                                         />
                                         Small 25 cm
@@ -138,7 +139,6 @@ else{
                                             type="radio"
                                             name="pizza-size"
                                             value="40000"
-                                            checked={selectedOption === "40000"}
                                             onChange={handleSizeChange}
                                         />
                                         Large 35 cm
