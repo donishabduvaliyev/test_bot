@@ -44,7 +44,7 @@ function CustomerInfo() {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            topping: item.toppings.map(topping => topping.name),
+            topping: item.toppings?.map(topping => topping.name),
             totalPrice: item.totalPrice,
             size: item.size,
 
