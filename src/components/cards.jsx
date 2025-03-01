@@ -23,9 +23,9 @@ function Cards({ section, cart, setCart ,count,setCount}) {
 if (event.target.value == '40000') {
     setSelectedSize(35)
 }
-else(
+else{
     selectedSize(25)
-)
+}
 
         setSelectedOption(event.target.value);
     }
