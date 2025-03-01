@@ -20,14 +20,16 @@ function Cards({ section, cart, setCart ,count,setCount}) {
     }
 
     function handleSizeChange(event) {
-if (event.target.value == '40000') {
-    setSelectedSize(35)
+        setSelectedOption(event.target.value);
+
+if (event.target.value !== '40000') {
+    setSelectedSize(25)
 }
 else{
-    selectedSize(25)
+    setSelectedSize(35)
 }
 
-        setSelectedOption(event.target.value);
+        
     }
 
     function handleToppingChange(event, topping) {
