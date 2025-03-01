@@ -47,11 +47,7 @@ function CustomerInfo() {
             topping: item.toppings.map(topping => topping.name),
             totalPrice: item.totalPrice,
             size: item.size,
-            size1: item.size ,
-            size2: item.size ,
-            size3: item.size ,
-            size4: item.size ,
-            status: 'mavjud emas'
+         
         })),
         orderID: {
             id: orderID,
@@ -64,6 +60,7 @@ function CustomerInfo() {
 console.log(cart);
 console.log(orderData);
 
+console.log("📤 Sending Order Data:", JSON.stringify(orderData, null, 2));
 
 
 
