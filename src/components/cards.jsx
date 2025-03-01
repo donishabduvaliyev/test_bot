@@ -20,7 +20,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
     }
 
     function handleSizeChange(event) {
-if (event.target.value === '40000') {
+if (event.target.value == '40000') {
     setSelectedSize(35)
 }
 else(
