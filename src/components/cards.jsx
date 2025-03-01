@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 function Cards({ section, cart, setCart ,count,setCount}) {
     const [selectedFood, setSelectedFood] = useState(null);
     const [selectedOption, setSelectedOption] = useState("");
-    const [selectedToppings, setSelectedToppings] = useState([]); // Store full topping objects
+    const [selectedToppings, setSelectedToppings] = useState([]); 
+    const [selectedSize , setSelectedSize] = useState()
+    // Store full topping objects
 
     function handleOpenModal(item) {
         setSelectedFood(item);
@@ -18,6 +20,13 @@ function Cards({ section, cart, setCart ,count,setCount}) {
     }
 
     function handleSizeChange(event) {
+if (event.target.value === '40000') {
+    setSelectedSize(35)
+}
+else(
+    selectedSize(25)
+)
+
         setSelectedOption(event.target.value);
     }
 
@@ -45,7 +54,7 @@ function Cards({ section, cart, setCart ,count,setCount}) {
     function addToCart() {
              const newItem = {
             ...selectedFood, 
-            size: selectedOption, 
+            size: selectedSize, 
             toppings: selectedToppings, 
             quantity: count, 
             totalPrice: (Number(selectedFood?.price || 0) +
