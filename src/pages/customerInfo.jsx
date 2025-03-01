@@ -47,7 +47,7 @@ function CustomerInfo() {
             topping: item.toppings.map(topping => topping.name),
             totalPrice: item.totalPrice,
             size: item.size,
-         
+
         })),
         orderID: {
             id: orderID,
@@ -57,10 +57,10 @@ function CustomerInfo() {
         }
     }
     ), [userInfo, selectedRadio, selectedLoc, comment, cart, userChatID]);
-console.log(cart);
-console.log(orderData);
+    console.log(cart);
+    console.log(orderData);
 
-console.log("📤 Sending Order Data:", JSON.stringify(orderData, null, 2));
+    console.log("📤 Sending Order Data:",);
 
 
 
@@ -118,7 +118,7 @@ console.log("📤 Sending Order Data:", JSON.stringify(orderData, null, 2));
             const response = await fetch("https://backend-xzwz.onrender.com/web-data", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify(orderData, null, 2)
             });
 
 
@@ -133,7 +133,7 @@ console.log("📤 Sending Order Data:", JSON.stringify(orderData, null, 2));
             setTimeout(() => {
                 setCart([]);
                 navigate("/");
-            }, 2000);
+            }, 1000);
 
         } catch (err) {
             console.error("❌ Fetch Error:", err);
