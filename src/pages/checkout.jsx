@@ -108,9 +108,8 @@ function CheckTheCart() {
 
             <button className="text-white text-[30px] bg-[#229ED9] w-[350px] mt-6 py-3 rounded-lg text-lg font-semibold"
                 onClick={() => navigate('/adressInfo')}>
-                <h1>
-                    {OrderPrice}
-                </h1>
+
+                {OrderPrice}
 
                 - UZS lik buyurtma berish
             </button>
