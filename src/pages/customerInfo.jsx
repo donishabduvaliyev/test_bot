@@ -44,8 +44,9 @@ function CustomerInfo() {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            topping: item.toppings,
-            totalPrice: item.totalPrice
+            topping: item.toppings.name,
+            totalPrice: item.totalPrice,
+            size: item.size
         })),
         orderID: {
             id: orderID,
@@ -55,6 +56,7 @@ function CustomerInfo() {
         }
     }
     ), [userInfo, selectedRadio, selectedLoc, comment, cart, userChatID]);
+console.log(cart);
 
 
     // Initialize MainButton text and expand WebApp
