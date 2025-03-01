@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useCart } from "../components/context";
 
 function CheckTheCart() {
-    const { cart, setCart, navigate, orderPrice, setOrderPrice } = useCart();
+    const { cart, setCart, navigate, OrderPrice, setOrderPrice } = useCart();
 
     // Calculates total price including quantity & toppings
     const calculateTotalPrice = (item) => {
@@ -109,7 +109,7 @@ function CheckTheCart() {
             <button className="text-white text-[30px] bg-[#229ED9] w-[350px] mt-6 py-3 rounded-lg text-lg font-semibold"
                 onClick={() => navigate('/adressInfo')}>
                 <h1>
-                    {orderPrice}
+                    {OrderPrice}
                 </h1>
 
                 - UZS lik buyurtma berish

@@ -14,7 +14,7 @@ function CustomerInfo() {
     const [newLocation, setNewLocation] = useState({ name: "", coordinates: "" });
     const [orderID, setOrderID] = useState(0)
     const [orderTime, setOrderTime] = useState('')
-    const { navigate, cart, setCart, orderPrice } = useCart();
+    const { navigate, cart, setCart, OrderPrice } = useCart();
 
     // Safely access Telegram WebApp
     const tg = window.Telegram?.WebApp;
@@ -50,7 +50,7 @@ function CustomerInfo() {
         orderID: {
             id: orderID,
             time: orderTime,
-            price: orderPrice
+            price: OrderPrice
 
         }
     }
