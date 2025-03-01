@@ -47,9 +47,11 @@ function CustomerInfo() {
             topping: item.toppings,
             totalPrice: item.totalPrice
         })),
-        orderId: {
+        orderID: {
             id: orderID,
             time: orderTime,
+            price: orderData
+
         }
     }
     ), [userInfo, selectedRadio, selectedLoc, comment, cart, userChatID]);
@@ -99,6 +101,7 @@ function CustomerInfo() {
         }
     }, [cart.length]);
 
+    console.log(orderData);
 
     const handleMainButtonClick = useCallback(async () => {
         if (!tg) return;
