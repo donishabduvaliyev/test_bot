@@ -44,9 +44,13 @@ function CustomerInfo() {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            topping: item.toppings.name,
+            topping: item.toppings.map(topping => topping.name),
             totalPrice: item.totalPrice,
             size: item.size,
+            size1: item.size ,
+            size2: item.size ,
+            size3: item.size ,
+            size4: item.size ,
             status: 'mavjud emas'
         })),
         orderID: {
@@ -58,6 +62,9 @@ function CustomerInfo() {
     }
     ), [userInfo, selectedRadio, selectedLoc, comment, cart, userChatID]);
 console.log(cart);
+console.log(orderData);
+
+
 
 
     // Initialize MainButton text and expand WebApp
