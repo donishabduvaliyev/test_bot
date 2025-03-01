@@ -46,7 +46,8 @@ function CustomerInfo() {
             quantity: item.quantity,
             topping: item.toppings.name,
             totalPrice: item.totalPrice,
-            size: item.size
+            size: item.size,
+            status: 'mavjud emas'
         })),
         orderID: {
             id: orderID,
