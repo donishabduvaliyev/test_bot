@@ -13,4 +13,7 @@ export default defineConfig({
       external: ["@react-google-maps/api"],
     },
   },
+  server: {
+    port: 5174, // Change this to your desired port
+  },
 })

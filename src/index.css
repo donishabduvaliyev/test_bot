@@ -6,19 +6,33 @@
     box-sizing: border-box;
 } */
 .section {
-    height: 100vh;  /* Each section fills the screen */
+    height: 100vh;
+    /* Each section fills the screen */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     background: lightgray;
     border-bottom: 2px solid black;
-  }
-input  {
+}
+
+input {
     border: 1px solid white;
 
 }
+
 textarea {
     border: 1px solid white;
 
+}
+
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar */
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

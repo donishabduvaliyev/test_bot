@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-function Cards({ section, cart, setCart ,count,setCount}) {
+function Cards({ section, cart, setCart, count, setCount }) {
     const [selectedFood, setSelectedFood] = useState(null);
     const [selectedOption, setSelectedOption] = useState("");
-    const [selectedToppings, setSelectedToppings] = useState([]); 
-    const [selectedSize , setSelectedSize] = useState()
+    const [selectedToppings, setSelectedToppings] = useState([]);
+    const [selectedSize, setSelectedSize] = useState()
     // Store full topping objects
 
     function handleOpenModal(item) {
         setSelectedFood(item);
         setSelectedOption("");
-        setSelectedToppings([]); 
+        setSelectedToppings([]);
         setCount(1);
     }
 
@@ -22,48 +22,48 @@ function Cards({ section, cart, setCart ,count,setCount}) {
     function handleSizeChange(event) {
         setSelectedOption(event.target.value);
 
-if (event.target.value !== '40000') {
-    setSelectedSize(25)
-    setSelectedOption(1)
-}
-else{
-    setSelectedSize(35)
-    setSelectedOption(40000)
-}
+        if (event.target.value !== '40000') {
+            setSelectedSize(25)
+            setSelectedOption(1)
+        }
+        else {
+            setSelectedSize(35)
+            setSelectedOption(40000)
+        }
 
-        
+
     }
 
     function handleToppingChange(event, topping) {
         const { checked } = event.target;
 
         if (checked) {
-            setSelectedToppings([...selectedToppings, topping]); 
+            setSelectedToppings([...selectedToppings, topping]);
         } else {
-            setSelectedToppings(selectedToppings.filter((t) => t.name !== topping.name)); 
+            setSelectedToppings(selectedToppings.filter((t) => t.name !== topping.name));
         }
     }
 
-   
+
 
 
     const totalPrice =
-        (Number(selectedFood?.price || 0) + 
-            Number(selectedOption) + 
-            selectedToppings.reduce((acc, topping) => acc + topping.price, 0) 
+        (Number(selectedFood?.price || 0) +
+            Number(selectedOption) +
+            selectedToppings.reduce((acc, topping) => acc + topping.price, 0)
         ) * count;
 
 
 
     function addToCart() {
-             const newItem = {
-            ...selectedFood, 
-            size: selectedSize, 
-            toppings: selectedToppings, 
-            quantity: count, 
+        const newItem = {
+            ...selectedFood,
+            size: selectedSize,
+            toppings: selectedToppings,
+            quantity: count,
             totalPrice: (Number(selectedFood?.price || 0) +
-            Number(selectedOption || 0) +
-            selectedToppings.reduce((acc, topping) => acc + (topping.price || 0), 0)) * count 
+                Number(selectedOption || 0) +
+                selectedToppings.reduce((acc, topping) => acc + (topping.price || 0), 0)) * count
         };
 
         if (selectedOption != '') {
@@ -80,29 +80,34 @@ else{
     return (
         <div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {section.items.map((item, index) => (
-                    <motion.div
-                        key={index}
-                        className="bg-gray-700 px-2 py-3 rounded-lg shadow-lg flex flex-col gap-5"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.2 }}
-                    >
-                        <div>
-                            <img src={item.image} className="w-[200px]" alt={item.name} />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <h1>{item.name}</h1>
-                            <h2>500 gr</h2>
-                        </div>
-                        <button
-                            className="cursor-pointer bg-sky-500 w-full rounded-2xl"
-                            onClick={() => handleOpenModal(item)}
+                {section.items && section.items.length > 0 ? (
+                    section.items.map((item, index) => (
+                        <motion.div
+                            key={index}
+                            className="bg-gray-700 px-2 py-3 rounded-lg shadow-lg flex flex-col gap-5"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5, delay: index * 0.2 }}
                         >
-                            {item.price}
-                        </button>
-                    </motion.div>
-                ))}
+                            <div>
+                                <img src={item.image} className="w-[200px]" alt={item.name} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <h1>{item.name}</h1>
+                                <h2>500 gr</h2>
+                            </div>
+                            <button
+                                className="cursor-pointer bg-sky-500 w-full rounded-2xl"
+                                onClick={() => handleOpenModal(item)}
+                            >
+                                {item.price}
+                            </button>
+                        </motion.div>
+                    ))
+                ) : (
+                    <p className="text-white">No items available for this category.</p>
+                )}
+
             </div>
 
             {/* Modal for choosing menu */}
