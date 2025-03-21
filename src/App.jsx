@@ -63,44 +63,48 @@ function App() {
         </div>;
       </> :
         <div className="bg-gray-900 text-white min-h-screen">
-          {/* Component ABOVE Navbar */}
-          <div className="w-full h-[60px] bg-gray-700 flex items-center justify-center">
-            <TopComponent />
-          </div>
 
-          {/* Navigation Bar */}
-          <motion.nav
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className={`w-full bg-gray-800 p-4 shadow-lg z-50 transition-all ${isNavbarFixed ? "fixed top-0 left-0" : "relative"
-              }`}
-          >
-            {/* Scrollable Container */}
-            <div className="overflow-x-auto whitespace-nowrap scrollbar-hide">
-              <div className="flex gap-4 px-4">
-                {products.length > 0 &&
-                  products[0]?.categories?.map((category, index) => (
-                    <a
-                      key={index}
-                      href={`#${category}`}
-                      className={`text-yellow-400 text-[15px] transition 
-              ${activeSection === category
-                          ? "underline font-bold text-white"
-                          : "text-gray-400"
-                        }
-            `}
-                    >
-                      {category}
-                    </a>
-                  ))}
-              </div>
+          <div className="flex flex-col">
+            <div className="w-full h-[60px] bg-gray-700 flex items-center justify-center">
+              <TopComponent />
             </div>
-          </motion.nav>
+
+            <div className="h-[120px] w-full"></div> 
+
+            {/* Navigation Bar */}
+            <motion.nav
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className={`w-full bg-gray-800 p-4  shadow-lg z-50 transition-all ${isNavbarFixed ? "fixed top-0 left-0" : "relative"
+                }`}
+            >
+              {/* Scrollable Container */}
+              <div className="overflow-x-auto whitespace-nowrap scrollbar-hide">
+                <div className="flex gap-4 px-4">
+                  {products.length > 0 &&
+                    products[0]?.categories?.map((category, index) => (
+                      <a
+                        key={index}
+                        href={`#${category}`}
+                        className={`text-yellow-400 text-[20px] transition 
+              ${activeSection === category
+                            ? "underline font-bold text-white"
+                            : "text-gray-400"
+                          }
+            `}
+                      >
+                        {category}
+                      </a>
+                    ))}
+                </div>
+              </div>
+            </motion.nav>
+          </div>
 
 
           {/* Search Bar */}
-          <div className={`w-full flex justify-center text-white p-4 ${isNavbarFixed ? "mt-[60px]" : ""}`}>
+          <div className={`w-full flex justify-center  text-white p-4 ${isNavbarFixed ? "mt-[60px]" : ""}`}>
             <input
               type="text"
               placeholder="Search for food..."
@@ -112,9 +116,7 @@ function App() {
 
           {/* 🔹 Show Loading Indicator */}
           {loading ? (
-            <div className="flex justify-center items-center min-h-screen">
-              <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <></>
           ) : (
             filteredProducts.length > 0 &&
             filteredProducts[0]?.categories?.map((category, index) => {
