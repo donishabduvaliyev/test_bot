@@ -65,7 +65,7 @@ function App() {
         <div className="bg-gray-900 text-white min-h-screen">
 
           <div className="flex flex-col">
-            <div className="w-full h-[60px] bg-gray-700 flex items-center justify-center">
+            <div className="w-full h-[60px] bg-gray-900 flex items-center justify-center">
               <TopComponent />
             </div>
 
@@ -76,7 +76,7 @@ function App() {
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className={`w-full bg-gray-800 p-4  shadow-lg z-50 transition-all ${isNavbarFixed ? "fixed top-0 left-0" : "relative"
+              className={`w-full bg-gray-800 p-5  shadow-lg z-50 transition-all ${isNavbarFixed ? "fixed top-0 left-0" : "relative"
                 }`}
             >
               {/* Scrollable Container */}
@@ -87,10 +87,10 @@ function App() {
                       <a
                         key={index}
                         href={`#${category}`}
-                        className={`text-yellow-400 text-[20px] transition 
+                        className={` text-[15px] transition 
               ${activeSection === category
-                            ? "underline font-bold text-white"
-                            : "text-gray-400"
+                            ? "underline font-bold text-center relative bottom-[5px] px-[10px] py-[5px] rounded-[10px] bg-green-600"
+                            : "text-white"
                           }
             `}
                       >

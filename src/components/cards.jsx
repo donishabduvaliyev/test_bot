@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { div } from "framer-motion/client";
 
 function Cards({ section, cart, setCart, count, setCount }) {
     const [selectedFood, setSelectedFood] = useState(null);
@@ -131,22 +132,19 @@ function Cards({ section, cart, setCart, count, setCount }) {
                                 </span>
                                 <div className="flex flex-col">
                                     <label className="text-white">
-                                        <input
-                                            type="radio"
-                                            name="pizza-size"
-                                            value="0"
-                                            onChange={handleSizeChange}
-                                        />
-                                        Small 25 cm
-                                    </label>
-                                    <label className="text-white">
-                                        <input
-                                            type="radio"
-                                            name="pizza-size"
-                                            value="40000"
-                                            onChange={handleSizeChange}
-                                        />
-                                        Large 35 cm
+
+                                        {selectedFood.sizes.map((size, index) => {
+                                            <div key={index}>
+                                                <input
+                                                    type="radio"
+                                                    name="pizza-size"
+                                                    value={size.price}
+                                                    onChange={handleSizeChange}
+                                                />
+                                                {size.name}
+
+                                            </div>
+                                        })}
                                     </label>
                                 </div>
                             </div>
