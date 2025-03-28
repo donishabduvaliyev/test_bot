@@ -3,14 +3,18 @@ import React, { useState, useEffect, useRef } from "react";
 const YandexMapModal = ({ onClose, onSave }) => {
     const [locationName, setLocationName] = useState("");
     const [coordinates, setCoordinates] = useState(null);
+    const [distance, setDistance] = useState(null); // Store calculated distance
+    const [deliveryPrice, setDeliveryPrice] = useState(null); // Store calculated price
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
     const placemark = useRef(null);
 
+    const centerCoords = [41.001380, 71.619064]; // Restaurant coordinates
+
     useEffect(() => {
         window.ymaps.ready(() => {
             mapInstance.current = new window.ymaps.Map(mapRef.current, {
-                center: [41.001380, 71.619064], 
+                center: centerCoords,
                 zoom: 10,
                 controls: ["zoomControl", "geolocationControl"],
             });
@@ -19,18 +23,20 @@ const YandexMapModal = ({ onClose, onSave }) => {
             mapInstance.current.events.add("click", (e) => {
                 const coords = e.get("coords");
                 setCoordinates(coords);
-
-                // Remove previous placemark if exists
-                if (placemark.current) {
-                    mapInstance.current.geoObjects.remove(placemark.current);
-                }
-
-                // Add new placemark
-                placemark.current = new window.ymaps.Placemark(coords, {}, { preset: "islands#redDotIcon" });
-                mapInstance.current.geoObjects.add(placemark.current);
+                addPlacemark(coords);
+                calculateDistance(coords); // Call distance function
             });
         });
     }, []);
+
+    // Function to add a placemark
+    const addPlacemark = (coords) => {
+        if (placemark.current) {
+            mapInstance.current.geoObjects.remove(placemark.current);
+        }
+        placemark.current = new window.ymaps.Placemark(coords, {}, { preset: "islands#redDotIcon" });
+        mapInstance.current.geoObjects.add(placemark.current);
+    };
 
     // Function to get user's current location
     const goToMyLocation = () => {
@@ -38,16 +44,9 @@ const YandexMapModal = ({ onClose, onSave }) => {
             (position) => {
                 const userCoords = [position.coords.latitude, position.coords.longitude];
                 setCoordinates(userCoords);
-
-                // Move map to user's location
                 mapInstance.current.setCenter(userCoords, 15);
-
-                // Remove old placemark and add new one
-                if (placemark.current) {
-                    mapInstance.current.geoObjects.remove(placemark.current);
-                }
-                placemark.current = new window.ymaps.Placemark(userCoords, {}, { preset: "islands#redDotIcon" });
-                mapInstance.current.geoObjects.add(placemark.current);
+                addPlacemark(userCoords);
+                calculateDistance(userCoords); // Call distance function
             },
             (error) => {
                 alert("Could not get your location: " + error.message);
@@ -55,9 +54,23 @@ const YandexMapModal = ({ onClose, onSave }) => {
         );
     };
 
+    // Function to calculate distance using Yandex Routing API
+    const calculateDistance = (userCoords) => {
+        window.ymaps.route([centerCoords, userCoords]).then((route) => {
+            const drivingDistance = route.getLength() / 1000; // Convert meters to km
+            setDistance(drivingDistance.toFixed(2));
+
+            const pricePerKm = 1.5; // Example price per km
+            const calculatedPrice = drivingDistance * pricePerKm;
+            setDeliveryPrice(calculatedPrice.toFixed(2));
+        }).catch((error) => {
+            console.error("Error calculating route:", error);
+        });
+    };
+
     const handleSave = () => {
         if (coordinates && locationName.trim()) {
-            onSave({ name: locationName, coordinates });
+            onSave({ name: locationName, coordinates, distance, deliveryPrice });
             onClose();
         } else {
             alert("Please select a location and enter a name.");
@@ -79,6 +92,12 @@ const YandexMapModal = ({ onClose, onSave }) => {
                     onChange={(e) => setLocationName(e.target.value)}
                     placeholder="manzil nomi"
                 />
+                {distance && (
+                    <div className="mt-2 text-lg">
+                        <p>🚗 Masofa: <b>{distance} km</b></p>
+                        <p>💰 Yetkazib berish narxi: <b>${deliveryPrice}</b></p>
+                    </div>
+                )}
                 <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleSave}>
                     ✅ Saqlash
                 </button>
