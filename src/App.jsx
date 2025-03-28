@@ -120,7 +120,7 @@ function App() {
           ) : (
             filteredProducts.length > 0 &&
             filteredProducts[0]?.categories?.map((category, index) => {
-              const filteredItems = filteredProducts[0]?.items?.filter((item) => item.category === category);
+              const filteredItems = filteredProducts[0]?.items?.filter((item) => item.category === category  && item.isAviable);
 
               return (
                 <motion.section
