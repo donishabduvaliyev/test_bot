@@ -8,8 +8,11 @@ const YandexMapModal = ({ onClose, onSave }) => {
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
     const placemark = useRef(null);
+    const routeRef = useRef(null); // At the top with other refs
 
-    const centerCoords = [41.001380, 71.619064]; // Restaurant coordinates
+
+    // const centerCoords = [41.001380, 71.619064]; 
+    const centerCoords = [71.619064, 41.001380];
     // console.log("Yandex Maps Object:", window.ymaps);
 
 
@@ -29,6 +32,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
 
             mapInstance.current.events.add("click", (e) => {
                 const coords = e.get("coords");
+                
                 setCoordinates(coords);
                 addPlacemark(coords);
                 calculateDistance(coords); // Call distance function
@@ -46,22 +50,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
         mapInstance.current.geoObjects.add(placemark.current);
     };
 
-    // Function to get user's current location
-    // const goToMyLocation = () => {
-    //     navigator.geolocation.getCurrentPosition(
-    //         (position) => {
-    //             const userCoords = [position.coords.latitude, position.coords.longitude];
-    //             setCoordinates(userCoords);
-    //             mapInstance.current.setCenter(userCoords, 15);
-    //             addPlacemark(userCoords);
-    //             calculateDistance(userCoords); // Call distance function
-    //         },
-    //         (error) => {
-    //             alert("Could not get your location: " + error.message);
-    //         }
-    //     );
-    // };
-
+  
 
     const goToMyLocation = () => {
         if (!mapInstance.current) {
@@ -71,7 +60,9 @@ const YandexMapModal = ({ onClose, onSave }) => {
     
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                const userCoords = [position.coords.latitude, position.coords.longitude];
+                // const userCoords = [position.coords.latitude, position.coords.longitude];
+                const userCoords = [position.coords.longitude, position.coords.latitude]; 
+
                 setCoordinates(userCoords);
                 mapInstance.current.setCenter(userCoords, 15);
                 addPlacemark(userCoords);
@@ -84,18 +75,57 @@ const YandexMapModal = ({ onClose, onSave }) => {
     };
     
     // Function to calculate distance using Yandex Routing API
-    const calculateDistance = (userCoords) => {
-        window.ymaps.route([centerCoords, userCoords]).then((route) => {
-            const drivingDistance = route.getLength() / 1000; // Convert meters to km
-            setDistance(drivingDistance.toFixed(2));
+    // const calculateDistance = (userCoords) => {
+    //     window.ymaps.route([centerCoords, userCoords]).then((route) => {
+    //         const drivingDistance = route.getLength() / 1000; // Convert meters to km
+    //         setDistance(drivingDistance.toFixed(2));
 
-            const pricePerKm = 1.5; // Example price per km
+    //         const pricePerKm = 10000; // Example price per km
+    //         const calculatedPrice = drivingDistance * pricePerKm;
+    //         setDeliveryPrice(calculatedPrice.toFixed(2));
+    //     }).catch((error) => {
+    //         console.error("Error calculating route:", error);
+    //     });
+    // };
+
+    // const calculateDistance = (userCoords) => {
+    //     window.ymaps.route([centerCoords, userCoords]).then((route) => {
+    //         // Show the route on the map
+    //         mapInstance.current.geoObjects.add(route); // ✅ Add route line to map
+    
+    //         // Get distance in kilometers
+    //         const drivingDistance = route.getLength() / 1000;
+    //         setDistance(drivingDistance.toFixed(2));
+    
+    //         const pricePerKm = 10000;
+    //         const calculatedPrice = drivingDistance * pricePerKm;
+    //         setDeliveryPrice(calculatedPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    //     }).catch((error) => {
+    //         console.error("Error calculating route:", error);
+    //     });
+    // };
+    
+
+    const calculateDistance = (userCoords) => {
+        if (routeRef.current) {
+            mapInstance.current.geoObjects.remove(routeRef.current);
+        }
+    
+        window.ymaps.route([centerCoords, userCoords]).then((route) => {
+            routeRef.current = route;
+            mapInstance.current.geoObjects.add(route);
+    
+            const drivingDistance = route.getLength() / 1000;
+            setDistance(drivingDistance.toFixed(2));
+    
+            const pricePerKm = 10000;
             const calculatedPrice = drivingDistance * pricePerKm;
-            setDeliveryPrice(calculatedPrice.toFixed(2));
+            setDeliveryPrice(calculatedPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         }).catch((error) => {
             console.error("Error calculating route:", error);
         });
     };
+    
 
     const handleSave = () => {
         if (coordinates && locationName.trim()) {
@@ -124,7 +154,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
                 {distance && (
                     <div className="mt-2 text-lg">
                         <p>🚗 Masofa: <b>{distance} km</b></p>
-                        <p>💰 Yetkazib berish narxi: <b>${deliveryPrice}</b></p>
+                        <p>💰 Yetkazib berish narxi: <b>UZS{deliveryPrice}</b></p>
                     </div>
                 )}
                 <button
