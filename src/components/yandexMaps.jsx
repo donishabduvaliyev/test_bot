@@ -12,7 +12,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
     const centerCoords = [41.001380, 71.619064]; // Restaurant coordinates
     // console.log("Yandex Maps Object:", window.ymaps);
 
-   
+
 
     useEffect(() => {
         window.ymaps.ready(() => {
@@ -111,9 +111,17 @@ const YandexMapModal = ({ onClose, onSave }) => {
                         <p>💰 Yetkazib berish narxi: <b>${deliveryPrice}</b></p>
                     </div>
                 )}
-                <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleSave}>
+                <button
+                    disabled={!coordinates || !locationName.trim()}
+                    className={`px-4 py-2 rounded ${!coordinates || !locationName.trim()
+                            ? "bg-gray-300 cursor-not-allowed"
+                            : "bg-green-500 text-white"
+                        }`}
+                    onClick={handleSave}
+                >
                     ✅ Saqlash
                 </button>
+
                 <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={onClose}>
                     ❌ Bekor qilish
                 </button>
