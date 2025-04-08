@@ -115,11 +115,11 @@ const YandexMapModal = ({ onClose, onSave }) => {
             routeRef.current = route;
             mapInstance.current.geoObjects.add(route);
     
-            const drivingDistance = route.getLength() / 1000;
+            const drivingDistance = route.getLength();
             setDistance(drivingDistance.toFixed(2));
     
             const pricePerKm = 10000;
-            const calculatedPrice = drivingDistance * pricePerKm;
+            const calculatedPrice = drivingDistance / 1000 * pricePerKm;
             setDeliveryPrice(calculatedPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         }).catch((error) => {
             console.error("Error calculating route:", error);
