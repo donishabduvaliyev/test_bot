@@ -10,16 +10,28 @@ const YandexMapModal = ({ onClose, onSave }) => {
     const placemark = useRef(null);
 
     const centerCoords = [41.001380, 71.619064]; // Restaurant coordinates
+    // console.log("Yandex Maps Object:", window.ymaps);
+
+   
 
     useEffect(() => {
         window.ymaps.ready(() => {
+            window.ymaps.setOptions({
+                debug: true // Show detailed errors
+            });
+
+
+            if (!window.ymaps.route) {
+                console.error("Yandex Routing API is not available. Check your API key or enable the Routing API.");
+                return;
+            }
+
             mapInstance.current = new window.ymaps.Map(mapRef.current, {
                 center: centerCoords,
                 zoom: 10,
                 controls: ["zoomControl", "geolocationControl"],
             });
 
-            // Click event to select location
             mapInstance.current.events.add("click", (e) => {
                 const coords = e.get("coords");
                 setCoordinates(coords);
@@ -28,6 +40,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
             });
         });
     }, []);
+
 
     // Function to add a placemark
     const addPlacemark = (coords) => {
