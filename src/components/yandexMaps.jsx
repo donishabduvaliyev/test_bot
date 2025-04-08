@@ -11,8 +11,8 @@ const YandexMapModal = ({ onClose, onSave }) => {
     const routeRef = useRef(null); // At the top with other refs
 
 
-    // const centerCoords = [41.001380, 71.619064]; 
-    const centerCoords = [71.619064, 41.001380];
+    const centerCoords = [41.001380, 71.619064]; 
+    // const centerCoords = [71.619064, 41.001380];
     // console.log("Yandex Maps Object:", window.ymaps);
 
 
@@ -60,8 +60,8 @@ const YandexMapModal = ({ onClose, onSave }) => {
     
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                // const userCoords = [position.coords.latitude, position.coords.longitude];
-                const userCoords = [position.coords.longitude, position.coords.latitude]; 
+                const userCoords = [position.coords.latitude, position.coords.longitude];
+                // const userCoords = [position.coords.longitude, position.coords.latitude]; 
 
                 setCoordinates(userCoords);
                 mapInstance.current.setCenter(userCoords, 15);
