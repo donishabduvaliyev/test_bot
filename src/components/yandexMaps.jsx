@@ -136,7 +136,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
 
         const straightDistance = haversineDistance(centerCoords, userCoords);
 
-        if (straightDistance < 0.5) {
+        if (straightDistance < 1) {
             setDistance(straightDistance.toFixed(2));
             const calculatedPrice = straightDistance * 10000;
             setDeliveryPrice(calculatedPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
