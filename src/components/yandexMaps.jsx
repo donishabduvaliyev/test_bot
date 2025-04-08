@@ -16,11 +16,6 @@ const YandexMapModal = ({ onClose, onSave }) => {
 
     useEffect(() => {
         window.ymaps.ready(() => {
-            window.ymaps.setOptions({
-                debug: true // Show detailed errors
-            });
-
-
             if (!window.ymaps.route) {
                 console.error("Yandex Routing API is not available. Check your API key or enable the Routing API.");
                 return;
@@ -52,21 +47,42 @@ const YandexMapModal = ({ onClose, onSave }) => {
     };
 
     // Function to get user's current location
+    // const goToMyLocation = () => {
+    //     navigator.geolocation.getCurrentPosition(
+    //         (position) => {
+    //             const userCoords = [position.coords.latitude, position.coords.longitude];
+    //             setCoordinates(userCoords);
+    //             mapInstance.current.setCenter(userCoords, 15);
+    //             addPlacemark(userCoords);
+    //             calculateDistance(userCoords); // Call distance function
+    //         },
+    //         (error) => {
+    //             alert("Could not get your location: " + error.message);
+    //         }
+    //     );
+    // };
+
+
     const goToMyLocation = () => {
+        if (!mapInstance.current) {
+            alert("Map is not ready yet. Please wait a moment.");
+            return;
+        }
+    
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const userCoords = [position.coords.latitude, position.coords.longitude];
                 setCoordinates(userCoords);
                 mapInstance.current.setCenter(userCoords, 15);
                 addPlacemark(userCoords);
-                calculateDistance(userCoords); // Call distance function
+                calculateDistance(userCoords);
             },
             (error) => {
                 alert("Could not get your location: " + error.message);
             }
         );
     };
-
+    
     // Function to calculate distance using Yandex Routing API
     const calculateDistance = (userCoords) => {
         window.ymaps.route([centerCoords, userCoords]).then((route) => {
