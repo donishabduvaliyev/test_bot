@@ -29,6 +29,11 @@ function CustomerInfo() {
 
     const selectedLoc = locations.find(loc => loc.id === parseInt(selectedLocation));
 
+    const totalOrderPrice = selectedLoc && selectedLoc.deliveryPrice
+    ? OrderPrice + selectedLoc.deliveryPrice
+    : OrderPrice;
+
+
     const orderData = useMemo(() => ({
 
 
@@ -56,7 +61,7 @@ function CustomerInfo() {
         orderID: {
             id: orderID,
             time: orderTime,
-            price: OrderPrice
+            price: totalOrderPrice
 
         }
     }
