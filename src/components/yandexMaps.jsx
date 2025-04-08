@@ -10,6 +10,7 @@ const YandexMapModal = ({ onClose, onSave }) => {
     const placemark = useRef(null);
     const routeRef = useRef(null); // At the top with other refs
 
+    const toYandexCoords = ([lat, lon]) => [lat, lon]; // or flip if needed
 
     const centerCoords = [41.001380, 71.619064];
     // const centerCoords = [71.619064, 41.001380];
