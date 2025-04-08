@@ -40,6 +40,8 @@ function CustomerInfo() {
             location: selectedLoc ? selectedLoc.name : "Not selected",
             coordinates: selectedLoc ? selectedLoc.coordinates : "",
             comment: comment,
+            deliveryPrice: selectedLoc ? selectedLoc.deliveryPrice : "",
+            distance: selectedLoc ? selectedLoc.distance : ""
         },
         cart: cart.map(item => ({
             _id: item._id,

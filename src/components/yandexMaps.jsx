@@ -95,40 +95,8 @@ const YandexMapModal = ({ onClose, onSave }) => {
         );
     };
 
-    // Function to calculate distance using Yandex Routing API
-    // const calculateDistance = (userCoords) => {
-    //     window.ymaps.route([centerCoords, userCoords]).then((route) => {
-    //         const drivingDistance = route.getLength() / 1000; // Convert meters to km
-    //         setDistance(drivingDistance.toFixed(2));
-
-    //         const pricePerKm = 10000; // Example price per km
-    //         const calculatedPrice = drivingDistance * pricePerKm;
-    //         setDeliveryPrice(calculatedPrice.toFixed(2));
-    //     }).catch((error) => {
-    //         console.error("Error calculating route:", error);
-    //     });
-    // };
-
-    // const calculateDistance = (userCoords) => {
-    //     window.ymaps.route([centerCoords, userCoords]).then((route) => {
-    //         // Show the route on the map
-    //         mapInstance.current.geoObjects.add(route); // ✅ Add route line to map
-
-    //         // Get distance in kilometers
-    //         const drivingDistance = route.getLength() / 1000;
-    //         setDistance(drivingDistance.toFixed(2));
-
-    //         const pricePerKm = 10000;
-    //         const calculatedPrice = drivingDistance * pricePerKm;
-    //         setDeliveryPrice(calculatedPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    //     }).catch((error) => {
-    //         console.error("Error calculating route:", error);
-    //     });
-    // };
-
-
     const calculateDistance = (userCoords) => {
-        // Remove previous route if exists
+       
         if (routeRef.current) {
             mapInstance.current.geoObjects.remove(routeRef.current);
             routeRef.current = null;
