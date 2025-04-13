@@ -121,50 +121,49 @@ function CustomerInfo() {
 
     const handleMainButtonClick = useCallback(async () => {
         if (!tg) return;
-
-
-        
+    
         let validationErrors = {};
         if (!userInfo.name.trim()) validationErrors.name = "Ism kiriting";
-        if (!userInfo.phone.trim()) validationErrors.phone = "telefon raqam kiriting";
+        if (!userInfo.phone.trim()) validationErrors.phone = "Telefon raqamingizni kiriting";
         if (!selectedRadio) validationErrors.deliveryType = "Yetkazish turini tanlang";
         if (selectedRadio === "delivery" && !selectedLocation) validationErrors.location = "Manzilni tanlang";
-
+    
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-            alert("Barcha ma'lumotlarni kiriting.");
+    
+            alert("❗ Iltimos, barcha ma'lumotlarni to'g'ri kiriting.\n\nOK tugmasini bosganingizdan so'ng davom etishingiz mumkin.");
+            
+            // Show MainButton again after alert is closed
+            if (tg) {
+                tg.MainButton.show();
+            }
+    
             return;
         }
-
-
-
+    
         try {
-
             const response = await fetch("https://backend-xzwz.onrender.com/web-data", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderData, null, 2)
             });
-
-
+    
             const data = await response.json();
             if (data.success) {
                 alert("✅ Buyurtmangiz yuborildi!");
-
             } else {
                 console.error("❌ Error:", data.error);
             }
-
+    
             setTimeout(() => {
                 setCart([]);
                 navigate("/");
             }, 1000);
-
         } catch (err) {
             console.error("❌ Fetch Error:", err);
         }
-    }, [orderData, navigate]);
-
+    }, [orderData, navigate, tg, userInfo, selectedRadio, selectedLocation]);
+    
 
     // Bind MainButton click handler
     useEffect(() => {

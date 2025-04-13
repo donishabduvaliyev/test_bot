@@ -5,6 +5,7 @@ import Cards from "./components/cards";
 import { useCart } from "./components/context";
 import axios from "axios";
 import TopComponent from "./components/TopComponent";
+import { div } from "framer-motion/client";
 
 function App() {
   const [activeSection, setActiveSection] = useState("");
@@ -162,12 +163,16 @@ function App() {
           )}
 
           {cart.length > 0 && (
-            <button
-              className="text-white text-[20px] sm:text-[30px] bg-[#229ED9] w-full max-w-[350px] fixed bottom-0 left-1/2 transform -translate-x-1/2 py-3 rounded-lg text-lg font-semibold"
+            <div className="relative">
+              <button
+            className="text-white bg-[#229ED9] w-full max-w-[350px] fixed bottom-1 left-1/2 -translate-x-1/2 py-3 rounded-lg text-base font-semibold sm:text-sm"
+
+              // className="text-white text-[20px] sm:text-[15px] bg-[#229ED9] w-full max-w-[350px] fixed bottom-0 left-1/2 transform -translate-x-1/2 py-3 rounded-lg text-lg font-semibold"
               onClick={handleNavigate}
             >
               Buyurtmalar
             </button>
+              </div>
           )}
         </div>
     )
