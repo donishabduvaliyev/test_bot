@@ -36,3 +36,18 @@ textarea {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+button {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .your-class {
+      padding: 10px;
+      font-size: 1rem;
+    }
+  }
+  
+  
