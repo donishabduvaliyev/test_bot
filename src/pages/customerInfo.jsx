@@ -142,7 +142,7 @@ function CustomerInfo() {
         }
     
         try {
-            const response = await fetch("https://backend-xzwz.onrender.com/web-data", {
+            const response = await fetch("https://backend-eghk.onrender.com/web-data", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderData, null, 2)

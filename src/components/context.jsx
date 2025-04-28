@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
         const fetchProducts = async () => {
             try {
                 setLoading(true); 
-                const response = await axios.get("https://backend-xzwz.onrender.com/api/products");
+                const response = await axios.get("https://backend-eghk.onrender.com/api/products");
 
                 if (Array.isArray(response.data)) {
                     setProducts(response.data);
