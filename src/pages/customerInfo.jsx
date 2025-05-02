@@ -32,6 +32,11 @@ function CustomerInfo() {
     const totalOrderPrice = selectedLoc && selectedLoc.deliveryPrice
     ? Number(OrderPrice) + Number(selectedLoc.deliveryPrice)
     : Number(OrderPrice);
+  console.log("Total Order Price:", totalOrderPrice);
+    console.log("Selected Location:", selectedLoc);
+    console.log("distance:", selectedLoc?.distance);
+    console.log("Delivery Price:", selectedLoc?.deliveryPrice);
+    
   
 
 
